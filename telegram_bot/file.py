@@ -1,16 +1,26 @@
-from flash import requests
-from flash import Response
+import math as m
 import telegram.ext
-#import pandas_datareader as web
-
-#with open("token.txt", "r") as f:
- #   TOKEN = f.read()
-  #  print("il tuo token è ", TOKEN)
-
-#TOKEN = open(r"C:\Users\311 Verona\Documents\GitHub\Ptco\esPython\telegram-bot\\token.txt", "r")
-#print("il tuo token è ", TOKEN)
+import telebot
+from random import randint
+from aiogram import Bot, Dispatcher, types
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
+bot=Bot( token= "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4" )
+dp= Dispatcher(bot)
+
+
+
+
+
+@dp.callback_query_handler(text = ["randomvalue10" , "randomvalue100"])
+def random_value(call: types.CallbackQuery):
+    if call.data == "randomvalue10":
+        call.message.answer(randint(1,10))
+    if call.data == "randomvalue100":
+        call.message.answer(randint(1,100))
+    call.answer()
+    
 
 def start(update, context):
     update.message.reply_text("Ciao bevenuto nel bot")
@@ -24,8 +34,10 @@ def help(update, context):
     /context --> Informazioni riguardo al corso
     /contact --> I miei contatti
     """)
+    
 def context(update, context):
     update.message.reply_text("il nostro contenuto")
+    
 def contact(update, context):
     update.message.reply_text("i miei contatti")
 
@@ -42,56 +54,51 @@ def tel_parse_message(message):
     print("chat_id-->", chat_id)
     print("txt-->", txt)
     return chat_id,txt
- 
-def tel_send_message(chat_id, text):
-    url = f'https://api.telegram.org/bot{TOKEN}/sendMessage'
-    payload = {
-                'chat_id': chat_id,
-                'text': text
-                }
-   
-    r = requests.post(url,json=payload)
-    return r
+
+@bot.message_handler(func=lambda m: "python" in m.text)
+def fun2(message):
+    markup = InlineKeyboardMarkup()
+    markup.row_width = 2
+    markup.add(InlineKeyboardButton("Azione 1", callback_data="id_azione_1"),
+               InlineKeyboardButton("Azione 2", callback_data="id_azione_2"))
+
+    bot.send_message(message.chat.id, "CIAO RAGAZZI", reply_markup=markup)
+
+m = 0   # assegnare le variabili dal csv
+coord_x = 0
+coord_y = 0
+nome = ""
+
+def dist(lat1,lon1, lat2, lon2):
+    return 6371 * 2 * m.asin(m.sqrt(m.pow(m.sin((m.radians(lat2) - m.radians(lat1)) / 2), 2) + m.cos(lat1) * m.cos(lat2) * m.pow(m.sin((m.radians(lon2) - m.radians(lon1)) / 2), 2)))
+
+def distanza(update, context) -> None:
+    try:
+        lat1 = update.message.location.latitude
+        lon1 = update.message.location.longitude
+        d = []
+        for i in range(0,len(coord_x)):
+            d.append(dist(lat1,lon1,coord_x[i],coord_y[i]))
+        e = d[:]
+        d.sort()
+        ind = 0
+        for i in range(0,len(d)):
+            if d[0]==e[i]:
+                ind = i
+                break
+        testo = "La scuola più vicina è: " + nome[ind]
+        testo_dist = "\nDistanza: " + str(round(d[0],2)) + " km"
+        context.bot.send_message(chat_id=update.effective_chat.id, text=testo+testo_dist)
+        update.message.reply_location(coord_x[ind], coord_y[ind])
+        testo = "Per trovare nuovamente la scuola più vicina invia la tua posizione."
+        context.bot.send_message(chat_id=update.effective_chat.id, text=testo)
+    except:
+        testo_try = "Attenzione!!!\nInviare solo la posizione attuale.\nInterrompere la condivisione della posizione in tempo reale."
+        context.bot.send_message(chat_id=update.effective_chat.id, text=testo_try) 
 
 def handle_message(update, context):
     update.message.reply_text(f"hai detto {update.message.text}")
     
-def index():
-    if requests.method == 'POST':
-        msg = requests.get_json()
-        try:
-            chat_id, txt = tel_parse_message(msg)
-            if txt == "inline":
-               tel_send_inlinebutton(chat_id)
-        except:
-            print("from index-->")
- 
-        return Response('ok', status=200)
-    else:
-        return "<h1>Welcome!</h1>"
- 
-
-def tel_send_inlinebutton(chat_id):
-    url = f'https://api.telegram.org/bot{TOKEN}/sendMessage'
- 
-    payload = {
-        'chat_id': chat_id,
-        'text': "What is this?",
-        'reply_markup': {
-            "inline_keyboard": [[
-                {
-                    "text": "A",
-                    "callback_data": "ic_A"
-                },
-                {
-                    "text": "B",
-                    "callback_data": "ic_B"
-                }]
-            ]
-        }
-    }
-    r = request.post(url, json=payload)
-    return r
     
 updater = telegram.ext.Updater(TOKEN, use_context=True)
 disp = updater.dispatcher
@@ -100,8 +107,9 @@ disp.add_handler(telegram.ext.CommandHandler("start", start))
 disp.add_handler(telegram.ext.CommandHandler("help", help))
 disp.add_handler(telegram.ext.CommandHandler("context", context))
 disp.add_handler(telegram.ext.CommandHandler("contact", contact))
+disp.add_handler(telegram.ext.CommandHandler("distanza", distanza))
 disp.add_handler(telegram.ext.MessageHandler(telegram.ext.Filters.text , handle_message))
-disp.add_handler(telegram.ext.CommandHandler("requests", tel_send_inlinebutton ))
+#disp.add_handler(telegram.ext.CommandHandler("random", random_answer))
 
 
 updater.start_polling()

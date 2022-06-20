@@ -28,7 +28,6 @@ def content(update, context):
 def contact(update, context):
     update.message.reply_text("I miei contatti")
 
-
 updater = telegram.ext.Updater(TOKEN, use_context=True)
 disp = updater.dispatcher
 
