@@ -1,9 +1,11 @@
 import telegram.ext
 
-with open("token.txt", "r") as f:
-    TOKEN = f.read()
-    print("Il tuo token è: ", TOKEN)
+from file import TOKEN
 
+#with open("token.txt", "r") as f:
+#    TOKEN = f.read()
+#    print("Il tuo token è: ", TOKEN)
+TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
 def start(update, context):
     update.message.reply_text("Ciao! Benvenuto nel bot")

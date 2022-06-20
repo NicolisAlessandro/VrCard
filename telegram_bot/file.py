@@ -1,4 +1,4 @@
-from flash import request
+from flash import requests
 from flash import Response
 import telegram.ext
 #import pandas_datareader as web
@@ -50,15 +50,15 @@ def tel_send_message(chat_id, text):
                 'text': text
                 }
    
-    r = request.post(url,json=payload)
+    r = requests.post(url,json=payload)
     return r
 
 def handle_message(update, context):
     update.message.reply_text(f"hai detto {update.message.text}")
     
 def index():
-    if request.method == 'POST':
-        msg = request.get_json()
+    if requests.method == 'POST':
+        msg = requests.get_json()
         try:
             chat_id, txt = tel_parse_message(msg)
             if txt == "inline":
