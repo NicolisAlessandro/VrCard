@@ -1,7 +1,5 @@
 import telegram.ext
 
-from file import TOKEN
-
 #with open("token.txt", "r") as f:
 #    TOKEN = f.read()
 #    print("Il tuo token è: ", TOKEN)

@@ -1,6 +1,5 @@
 import math as m
 import telegram.ext
-import telebot
 from random import randint
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
