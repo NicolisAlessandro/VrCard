@@ -212,7 +212,7 @@ def handle_message(update, context):
     
     if "jurney" in update.message.text:
 
-        buttons=[[KeyboardButton("Churc")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Go Back")]]
+        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Go Back")]]
         context.bot.send_message(chat_id=update.effective_chat.id, text="select the tyupe of monuments you want to visit",
         reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
 
@@ -249,8 +249,8 @@ def handle_message(update, context):
 
     if "🇬🇧 / 🇺🇸 English" in update.message.text:
 
-        buttons=[[KeyboardButton("Maps")],[KeyboardButton("jurney")], [KeyboardButton("graphs")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?",
+        buttons=[[KeyboardButton("Maps")],[KeyboardButton("journey")], [KeyboardButton("graphs")],[KeyboardButton("Back/Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="🇬🇧 / 🇺🇸 Welcome to our bot",
         reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
 
 def queryHandler(update, context):
@@ -264,7 +264,7 @@ def queryHandler(update, context):
         reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
     
     if "Back" in query:
-        buttons=[[KeyboardButton("Churc")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Back/Indietro")]]
+        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Back/Indietro")]]
         context.bot.send_message(chat_id=update.effective_chat.id, text="select the tyupe of monuments you want to visit",
         reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
 
