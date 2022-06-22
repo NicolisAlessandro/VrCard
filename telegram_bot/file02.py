@@ -1,7 +1,5 @@
 import telegram.ext
 
-from file import TOKEN
-
 #with open("token.txt", "r") as f:
 #    TOKEN = f.read()
 #    print("Il tuo token è: ", TOKEN)
@@ -27,7 +25,6 @@ def content(update, context):
 
 def contact(update, context):
     update.message.reply_text("I miei contatti")
-
 
 updater = telegram.ext.Updater(TOKEN, use_context=True)
 disp = updater.dispatcher
