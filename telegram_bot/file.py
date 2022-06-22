@@ -132,7 +132,6 @@ from telegram.ext import CallbackQueryHandler
 import csv
 import sqlite3
 
-luoghi = []
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
@@ -154,12 +153,19 @@ def csv_read():
     for row in reader: 
         if list.__contains__(row[3]) == False:
             list.add(row[3])
-    print(list)    
+    print(list)   
+
 def handle_message(update, context):
     if "Chiese" in update.message.text:
 
         btn=[[InlineKeyboardButton("chiesa1",callback_data="chiesa1")], [InlineKeyboardButton("chiesa2",callback_data="chiesa2")], [InlineKeyboardButton("chiesa3",callback_data="chiesa3")], [InlineKeyboardButton("indietro",callback_data="indietro")]]
         context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="ecco la lista delle chiese: ")
+
+    if "Back/Indietro" in update.message.text:
+
+        buttons=[[KeyboardButton("🇮🇹 Italiano")],[KeyboardButton("🇬🇧 / 🇺🇸 English")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text=" 🇮🇹 Scegli la lingua \n 🇬🇧 / 🇺🇸 Choose the language",
+        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
 
     if "musei" in update.message.text:
 
@@ -176,6 +182,18 @@ def handle_message(update, context):
         btn=[[InlineKeyboardButton("church1",callback_data="church1")], [InlineKeyboardButton("church2",callback_data="church2")], [InlineKeyboardButton("church3",callback_data="church3")], [InlineKeyboardButton("Back",callback_data="Back")]]
         context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="list of all churches: ")
 
+    if "graphs" in update.message.text:
+
+        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Go Back")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="flow graphs:",
+        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+
+    if "grafici" in update.message.text:
+
+        buttons=[[KeyboardButton("Chiese")],[KeyboardButton("musei")], [KeyboardButton("monumenti")],[KeyboardButton("Torna Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="grafici di flusso",
+        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+
     if "museum" in update.message.text:
         
         btn=[[InlineKeyboardButton("museum1",callback_data="museum1")], [InlineKeyboardButton("museum2",callback_data="museum2")], [InlineKeyboardButton("museum3",callback_data="museum3")], [InlineKeyboardButton("Back",callback_data="Back")]]
@@ -185,24 +203,54 @@ def handle_message(update, context):
 
         btn=[[InlineKeyboardButton("monuments1",callback_data="monuments1")], [InlineKeyboardButton("monuments2",callback_data="monuments2")], [InlineKeyboardButton("monuments3",callback_data="monuments3")], [InlineKeyboardButton("Back",callback_data="Back")]]
         context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="list of all monuements: ")
-    
-    if "Back/Indietro" in update.message.text:
 
-        buttons=[[KeyboardButton("🇮🇹 Italiano")],[KeyboardButton("🇬🇧 / 🇺🇸 English")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text=" 🇮🇹 Scegli la lingua \n 🇬🇧 / 🇺🇸 Choose the language",
+    if "Maps" in update.message.text:
+
+        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Go Back")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="*map*",
+        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+    
+    if "jurney" in update.message.text:
+
+        buttons=[[KeyboardButton("Churc")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Go Back")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="select the tyupe of monuments you want to visit",
+        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+
+    if "Viaggio" in update.message.text:
+
+        buttons=[[KeyboardButton("Chiese")],[KeyboardButton("musei")], [KeyboardButton("monumenti")],[KeyboardButton("Torna Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="scegli quale tipo di struttura vuoi",
+        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+
+    if "Mappa" in update.message.text:
+
+        i = 1
+        buttons=[[KeyboardButton("Chiese")],[KeyboardButton("musei")], [KeyboardButton("monumenti")],[KeyboardButton("Torna Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="*mappa*",
+        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+    
+    if "Torna Indietro" in update.message.text:
+
+        buttons=[[KeyboardButton("Mappa")],[KeyboardButton("Viaggio")], [KeyboardButton("grafici")],[KeyboardButton("Back/Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?",
+        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+
+    if "Go Back" in update.message.text:
+
+        buttons=[[KeyboardButton("Maps")],[KeyboardButton("journey")], [KeyboardButton("graphs")],[KeyboardButton("Back/Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="🇬🇧 / 🇺🇸 Welcome to our bot",
         reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
 
     if "🇮🇹 Italiano" in update.message.text:
         
-        i=1
-        buttons=[[KeyboardButton("Chiese")],[KeyboardButton("musei")], [KeyboardButton("monumenti")],[KeyboardButton("Back/Indietro")]]
+        buttons=[[KeyboardButton("Mappa")],[KeyboardButton("Viaggio")], [KeyboardButton("grafici")],[KeyboardButton("Back/Indietro")]]
         context.bot.send_message(chat_id=update.effective_chat.id, text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?",
         reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
 
     if "🇬🇧 / 🇺🇸 English" in update.message.text:
 
-        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="🇬🇧 / 🇺🇸 Welcome to our bot, select the type of monument you want to visit?",
+        buttons=[[KeyboardButton("Maps")],[KeyboardButton("jurney")], [KeyboardButton("graphs")],[KeyboardButton("Back/Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?",
         reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
 
 def queryHandler(update, context):
@@ -212,12 +260,12 @@ def queryHandler(update, context):
 
     if "indietro" in query:
         buttons=[[KeyboardButton("Chiese")],[KeyboardButton("musei")], [KeyboardButton("monumenti")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?",
+        context.bot.send_message(chat_id=update.effective_chat.id, text="scegli quale tipo di struttura vuoi",
         reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
     
     if "Back" in query:
-        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="🇬🇧 / 🇺🇸 Welcome to our bot, select the type of monument you want to visit?",
+        buttons=[[KeyboardButton("Churc")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Back/Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, text="select the tyupe of monuments you want to visit",
         reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
 
     if "museo" in query:
@@ -266,8 +314,6 @@ disp.add_handler(telegram.ext.CommandHandler("content", content))
 disp.add_handler(telegram.ext.CommandHandler("contact", contact))
 disp.add_handler(CallbackQueryHandler(queryHandler))
 disp.add_handler(telegram.ext.MessageHandler(telegram.ext.Filters.text, handle_message))
-
-
 
 
 updater.start_polling()
