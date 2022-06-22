@@ -31,12 +31,21 @@ def csv_read():
             list.add(row[3])
     print(list)
     
+def read_from_db(update, context):
+    if "Chiese" in update.message.text:
+        conn = sqlite3.connect('veronacard.db')
+        c = conn.cursor()
+        c.execute('SELECT latitude, longitude FROM sites_info')
+        data = c.fetchall()
+        for row in data:
+            print(row)
+    
 def handle_message(update, context):
     if "Chiese" in update.message.text:
        
-        btn=[[InlineKeyboardButton("chiesa1",callback_data="chiesa1")], [InlineKeyboardButton("chiesa2",callback_data="chiesa2")], [InlineKeyboardButton("chiesa3",callback_data="chiesa3")], [InlineKeyboardButton("chiesa3",callback_data="chiesa4")], [InlineKeyboardButton("indietro",callback_data="indietro")]]
+        btn=[[InlineKeyboardButton("chiesa1",callback_data="chiesa1")], [InlineKeyboardButton("chiesa2",callback_data="chiesa2")], [InlineKeyboardButton("chiesa3",callback_data="chiesa3")], [InlineKeyboardButton("chiesa4",callback_data="chiesa4")], [InlineKeyboardButton("indietro",callback_data="indietro")]]
         context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="ecco la lista delle chiese: ")
-        descrizioneBot("Chiese")
+        #descrizioneBot("Chiese")
 
     if "Back/Indietro" in update.message.text:
 
@@ -191,7 +200,7 @@ disp.add_handler(telegram.ext.CommandHandler("content", content))
 disp.add_handler(telegram.ext.CommandHandler("contact", contact))
 disp.add_handler(CallbackQueryHandler(queryHandler))
 disp.add_handler(telegram.ext.MessageHandler(telegram.ext.Filters.text, handle_message))
-#disp.add_handler(telegram.ext.MessageHandler(telegram.ext.Filters.text, creaBottoni))
+disp.add_handler(telegram.ext.MessageHandler(telegram.ext.Filters.text, read_from_db))
 
 updater.start_polling()
 updater.idle()
