@@ -2,157 +2,160 @@ import telegram.ext
 from telegram import*
 from requests import*
 from telegram.ext import CallbackQueryHandler
+import csv
 import sqlite3
 
-from prova import creaBottonibot, descrizioneBot
-
-with open("token.txt", "r") as f:
+lan = None
+with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
-
-TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
 def start(update, context):
 
     #csv_read()
 
-    buttons=[[KeyboardButton("🇮🇹 Italiano")],[KeyboardButton("🇬🇧 / 🇺🇸 English")]]
-    context.bot.send_message(chat_id=update.effective_chat.id, text=" 🇮🇹 Scegli la lingua \n 🇬🇧 / 🇺🇸 Choose the language",
-    reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+    buttons=[[InlineKeyboardButton("🇮🇹 Italiano", callback_data="🇮🇹 Italiano")],[InlineKeyboardButton("🇬🇧 / 🇺🇸 English",callback_data="🇬🇧 / 🇺🇸 English")]]
+    context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons),text="lingua:🇮🇹 Italiano\n\t\t\t\t\t\t\t\t\t\t\t\t🇬🇧 / 🇺🇸 English ")
 
-def csv_read():
-    list = []
-    Dup = []
-    reader = sqlite3.connect('veronacard.db')
-    c = reader.cursor()
-    c.execute('SELECT name_id FROM site_info')
-    for row in reader: 
-        if list.__contains__(row[3]) == False:
-            list.add(row[3])
-    print(list)
-    
-def read_from_db(update, context):
-    if "Chiese" in update.message.text:
-        conn = sqlite3.connect('veronacard.db')
-        c = conn.cursor()
-        c.execute('SELECT latitude, longitude FROM sites_info')
-        data = c.fetchall()
-        for row in data:
-            print(row)
-    
-def handle_message(update, context):
-    if "Chiese" in update.message.text:
-       
-        btn=[[InlineKeyboardButton("chiesa1",callback_data="chiesa1")], [InlineKeyboardButton("chiesa2",callback_data="chiesa2")], [InlineKeyboardButton("chiesa3",callback_data="chiesa3")], [InlineKeyboardButton("chiesa4",callback_data="chiesa4")], [InlineKeyboardButton("indietro",callback_data="indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="ecco la lista delle chiese: ")
-        #descrizioneBot("Chiese")
-
-    if "Back/Indietro" in update.message.text:
-
-        buttons=[[KeyboardButton("🇮🇹 Italiano")],[KeyboardButton("🇬🇧 / 🇺🇸 English")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text=" 🇮🇹 Scegli la lingua \n 🇬🇧 / 🇺🇸 Choose the language",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-
-    if "musei" in update.message.text:
-
-        btn=[[InlineKeyboardButton("museo1",callback_data="museo1")], [InlineKeyboardButton("museo2",callback_data="museo2")], [InlineKeyboardButton("museo3",callback_data="museo3")], [InlineKeyboardButton("indietro",callback_data="indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="ecco la lista dei musei: ")
-
-    if "monumenti" in update.message.text:
-
-        btn=[[InlineKeyboardButton("monumento1",callback_data="monumento1")], [InlineKeyboardButton("monumento2",callback_data="monumento2")], [InlineKeyboardButton("monumento3",callback_data="monumento3")], [InlineKeyboardButton("indietro",callback_data="indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="ecco la lista dei monumenti: ")
-
-    if "Church" in update.message.text:
-
-        btn=[[InlineKeyboardButton("church1",callback_data="church1")], [InlineKeyboardButton("church2",callback_data="church2")], [InlineKeyboardButton("church3",callback_data="church3")], [InlineKeyboardButton("Back",callback_data="Back")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="list of all churches: ")
-
-    if "graphs" in update.message.text:
-
-        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Go Back")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="flow graphs:",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-
-    if "grafici" in update.message.text:
-
-        buttons=[[KeyboardButton("Chiese")],[KeyboardButton("musei")], [KeyboardButton("monumenti")],[KeyboardButton("Torna Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="grafici di flusso",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-
-    if "museum" in update.message.text:
-        
-        btn=[[InlineKeyboardButton("museum1",callback_data="museum1")], [InlineKeyboardButton("museum2",callback_data="museum2")], [InlineKeyboardButton("museum3",callback_data="museum3")], [InlineKeyboardButton("Back",callback_data="Back")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="list of all museums: ")
-
-    if "monuments" in update.message.text:
-
-        btn=[[InlineKeyboardButton("monuments1",callback_data="monuments1")], [InlineKeyboardButton("monuments2",callback_data="monuments2")], [InlineKeyboardButton("monuments3",callback_data="monuments3")], [InlineKeyboardButton("Back",callback_data="Back")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(btn),text="list of all monuements: ")
-
-    if "Maps" in update.message.text:
-
-        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Go Back")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="*map*",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-    
-    if "jurney" in update.message.text:
-
-        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Go Back")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="select the tyupe of monuments you want to visit",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-
-    if "Viaggio" in update.message.text:
-
-        buttons=[[KeyboardButton("Chiese")],[KeyboardButton("musei")], [KeyboardButton("monumenti")],[KeyboardButton("Torna Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="scegli quale tipo di struttura vuoi",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-
-    if "Mappa" in update.message.text:
-
-        i = 1
-        buttons=[[KeyboardButton("Chiese")],[KeyboardButton("musei")], [KeyboardButton("monumenti")],[KeyboardButton("Torna Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="*mappa*",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-    
-    if "Torna Indietro" in update.message.text:
-
-        buttons=[[KeyboardButton("Mappa")],[KeyboardButton("Viaggio")], [KeyboardButton("grafici")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-
-    if "Go Back" in update.message.text:
-
-        buttons=[[KeyboardButton("Maps")],[KeyboardButton("journey")], [KeyboardButton("graphs")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="🇬🇧 / 🇺🇸 Welcome to our bot",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-
-    if "🇮🇹 Italiano" in update.message.text:
-        
-        buttons=[[KeyboardButton("Mappa")],[KeyboardButton("Viaggio")], [KeyboardButton("grafici")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-
-    if "🇬🇧 / 🇺🇸 English" in update.message.text:
-
-        buttons=[[KeyboardButton("Maps")],[KeyboardButton("journey")], [KeyboardButton("graphs")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="🇬🇧 / 🇺🇸 Welcome to our bot",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
-
+#def handle_message(update, context):
 def queryHandler(update, context):
 
     query = update.callback_query.data
     update.callback_query.answer()
 
-    if "indietro" in query:
-        buttons=[[KeyboardButton("Chiese")],[KeyboardButton("musei")], [KeyboardButton("monumenti")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="scegli quale tipo di struttura vuoi",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+    if "Viaggio" in query:
+
+        buttons=[[InlineKeyboardButton("Monumenti",callback_data="Via_Monumenti")], [InlineKeyboardButton("Musei",callback_data="Via_Musei")],[InlineKeyboardButton("Chiese",callback_data="Via_Chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="null")
+
+    if "Mappa" in query:
+
+        buttons=[[InlineKeyboardButton("Monumenti",callback_data="map_Monumenti")], [InlineKeyboardButton("Musei",callback_data="map_Musei")],[InlineKeyboardButton("chiese",callback_data="map_chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="mappa")
     
-    if "Back" in query:
-        buttons=[[KeyboardButton("Church")],[KeyboardButton("museum")], [KeyboardButton("monuments")],[KeyboardButton("Back/Indietro")]]
-        context.bot.send_message(chat_id=update.effective_chat.id, text="select the tyupe of monuments you want to visit",
-        reply_markup=ReplyKeyboardMarkup(buttons, one_time_keyboard=True))
+    if "Grafici" in query:
+
+        buttons=[[InlineKeyboardButton("Monumenti",callback_data="graf_Monumenti")], [InlineKeyboardButton("Musei",callback_data="graf_Musei")],[InlineKeyboardButton("chiese",callback_data="graf_chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="Grafici: ")
+        
+    if "eng_map" in query:
+
+        buttons=[[InlineKeyboardButton("Monuments",callback_data="map_Monuments")], [InlineKeyboardButton("Museum",callback_data="map_Museum")],[InlineKeyboardButton("Church",callback_data="Jur_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="Where we droppin' bois?")   
+    
+    if "Jurney" in query:
+
+        buttons=[[InlineKeyboardButton("Monuments",callback_data="Jur_Monuments")], [InlineKeyboardButton("Museum",callback_data="Jur_Museum")],[InlineKeyboardButton("Church",callback_data="Jur_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="Where we droppin' bois?")
+    
+    if "Graphs" in query:
+
+        buttons=[[InlineKeyboardButton("Monuments",callback_data="graf_Monuments")], [InlineKeyboardButton("Museum",callback_data="graf_Museum")],[InlineKeyboardButton("Church",callback_data="graf_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="Graphs: ")
+
+    if "Back/Indietro" in query:
+
+        start(update, context)
+
+    if "map_Monuments" in query:
+
+        buttons=[[InlineKeyboardButton("Mon1s",callback_data="map_Mon1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which monument?")
+
+    if "map_Museum" in query:
+
+        buttons=[[InlineKeyboardButton("Mus1",callback_data="map_Mus1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which museum?")
+    
+    if "map_Church" in query:
+
+        buttons=[[InlineKeyboardButton("Chu1",callback_data="map_Chu1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which Church?")
+
+    if "graf_Monuments" in query:
+
+        buttons=[[InlineKeyboardButton("Mon1s",callback_data="graf_Mon1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which monument?")
+
+    if "graf_Museum" in query:
+
+        buttons=[[InlineKeyboardButton("Mus1",callback_data="graf_Mus1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which museum?")
+    
+    if "graf_Church" in query:
+
+        buttons=[[InlineKeyboardButton("Chu1",callback_data="graf_Chu1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which Church?")
+    
+    if "Jur_Monuments" in query:
+
+        buttons=[[InlineKeyboardButton("Mon1s",callback_data="Mon1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which monument?")
+
+    if "Jur_Museum" in query:
+
+        buttons=[[InlineKeyboardButton("Mus1",callback_data="Mus1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which museum?")
+    
+    if "Jur_Church" in query:
+
+        buttons=[[InlineKeyboardButton("Chu1",callback_data="Jur_Chu1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which Church?")
+
+    if "map_Monumenti" in query:
+
+        buttons=[[InlineKeyboardButton("Mon1s",callback_data="map_Monumento1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali monumenti?")
+
+    if "map_Musei" in query:
+
+        buttons=[[InlineKeyboardButton("Mus1",callback_data="map_Museo1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali musei?")
+    
+    if "map_Chiese" in query:
+
+        buttons=[[InlineKeyboardButton("Chiesa1",callback_data="map_Chi1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali chiesa?")
+    
+    if "graf_Monumenti" in query:
+
+        buttons=[[InlineKeyboardButton("Mon1s",callback_data="graf_Monumento1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali monumenti?")
+
+    if "graf_Musei" in query:
+
+        buttons=[[InlineKeyboardButton("Mus1",callback_data="graf_Museo1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali musei?")
+    
+    if "graf_Chiese" in query:
+
+        buttons=[[InlineKeyboardButton("Chiesa1",callback_data="graf_Chi1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali chiesa?")
+
+    if "Via_Monumenti" in query:
+
+        buttons=[[InlineKeyboardButton("Mon1s",callback_data="Via_Monumento1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali monumenti?")
+
+    if "Via_Musei" in query:
+
+        buttons=[[InlineKeyboardButton("Mus1",callback_data="Via_Museo1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali museo?")
+    
+    if "Via_Chiese" in query:
+
+        buttons=[[InlineKeyboardButton("Chiesa1",callback_data="Via_Chi1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali chiesa?")
+
+
+    if "🇬🇧 / 🇺🇸 English" in query:
+        buttons=[[InlineKeyboardButton("Map",callback_data="eng_map")],[InlineKeyboardButton("Jurney",callback_data="Jurney")], [InlineKeyboardButton("Graphs",callback_data="Graphs")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="🇮🇹 welcome to our telegram bot,which type of structure would you like to visit today?")
+
+    if "🇮🇹 Italiano" in query:
+
+        buttons=[[InlineKeyboardButton("Mappa",callback_data="Mappa")],[InlineKeyboardButton("Viaggio",callback_data="Viaggio")], [InlineKeyboardButton("Grafici",callback_data="Grafici")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?")
 
     if "museo" in query:
         context.bot.send_message(chat_id=update.effective_chat.id, text="musei")
@@ -195,12 +198,10 @@ disp = updater.dispatcher
 
 disp.add_handler(telegram.ext.CommandHandler("start", start))
 disp.add_handler(telegram.ext.CommandHandler("help", help))
-disp.add_handler(telegram.ext.CommandHandler("csv_read", csv_read))
 disp.add_handler(telegram.ext.CommandHandler("content", content))
 disp.add_handler(telegram.ext.CommandHandler("contact", contact))
 disp.add_handler(CallbackQueryHandler(queryHandler))
-disp.add_handler(telegram.ext.MessageHandler(telegram.ext.Filters.text, handle_message))
-disp.add_handler(telegram.ext.MessageHandler(telegram.ext.Filters.text, read_from_db))
+
 
 updater.start_polling()
 updater.idle()
