@@ -12,6 +12,20 @@ def descrizioneBot(parametro):
      #   print(row)
     return data
 
+def AffluenzaBot():
+    conn = sqlite3.connect('bruh.db')
+    c = conn.cursor()   
+    
+    query_par = f'SELECT data_visita FROM bruh'    
+    
+    c.execute(query_par)
+    data = c.fetchall()
+    for row in data:
+        print(row)
+    return row
+
+#AffluenzaBot("Chiese")
+
 def posizioneBot(parametro):
     conn = sqlite3.connect('veronacard.db')
     c = conn.cursor()   
@@ -23,5 +37,6 @@ def posizioneBot(parametro):
 
     for row in data:
         print(row)  
+    return data
 
-posizioneBot("Monumenti")
+#posizioneBot("Monumenti")
