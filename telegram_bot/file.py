@@ -2,26 +2,22 @@ import telegram.ext
 from telegram import*
 from requests import*
 from telegram.ext import CallbackQueryHandler
-from prova import posizioneBot, descrizioneBot
+import csv
+import sqlite3
 
 lan = None
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
-    
-TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
 def start(update, context):
+
+    #csv_read()
+
     buttons=[[InlineKeyboardButton("🇮🇹 Italiano", callback_data="🇮🇹 Italiano")],[InlineKeyboardButton("🇬🇧 / 🇺🇸 English",callback_data="🇬🇧 / 🇺🇸 English")]]
     context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons),text="lingua:🇮🇹 Italiano\n\t\t\t\t\t\t\t\t\t\t\t\t🇬🇧 / 🇺🇸 English ")
 
-name_id = []
-descr_it = [] 
-descr_it = descrizioneBot("Chiese")
-#descr_eng = []
-list = []
-list = posizioneBot("Chiese")
-
+#def handle_message(update, context):
 def queryHandler(update, context):
 
     query = update.callback_query.data
@@ -63,7 +59,10 @@ def queryHandler(update, context):
 
     if "map_Monuments" in query:
 
-        buttons=[[InlineKeyboardButton("Monument",callback_data="map_1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        buttons=[[InlineKeyboardButton("Monument",callback_data="map_monument1")], [InlineKeyboardButton("Monument",callback_data="map_monument2")],
+        [InlineKeyboardButton("Monument",callback_data="map_monument3")],[InlineKeyboardButton("Monument",callback_data="map_monument4")],
+        [InlineKeyboardButton("Monument",callback_data="map_monument5")],[InlineKeyboardButton("Monument",callback_data="map_monument6")],
+        [InlineKeyboardButton("Monument",callback_data="map_monument7")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
         context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which monument?")
 
     if "map_Museum" in query:
@@ -80,7 +79,10 @@ def queryHandler(update, context):
 
     if "graf_Monuments" in query:
 
-        buttons=[[InlineKeyboardButton("Mon1s",callback_data="graf_Mon1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        buttons=[[InlineKeyboardButton("Monument",callback_data="graf_monument1")], [InlineKeyboardButton("Monument",callback_data="graf_monument2")],
+        [InlineKeyboardButton("Monument",callback_data="graf_monument3")],[InlineKeyboardButton("Monument",callback_data="graf_monument4")],
+        [InlineKeyboardButton("Monument",callback_data="graf_monument5")],[InlineKeyboardButton("Monument",callback_data="graf_monument6")],
+        [InlineKeyboardButton("Monument",callback_data="graf_monument7")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
         context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which monument?")
 
     if "graf_Museum" in query:
@@ -96,12 +98,15 @@ def queryHandler(update, context):
     
     if "Jur_Monuments" in query:
 
-        buttons=[[InlineKeyboardButton("Mon1s",callback_data="Mon1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        buttons=[[InlineKeyboardButton("Monument",callback_data="Jur_monument1")], [InlineKeyboardButton("Monument",callback_data="Jur_monument2")],
+        [InlineKeyboardButton("Monument",callback_data="Jur_monument3")],[InlineKeyboardButton("Monument",callback_data="Jur_monument4")],
+        [InlineKeyboardButton("Monument",callback_data="Jur_monument5")],[InlineKeyboardButton("Monument",callback_data="Jur_monument6")],
+        [InlineKeyboardButton("Monument",callback_data="Jur_monument7")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
         context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which monument?")
 
     if "Jur_Museum" in query:
 
-        buttons=[[InlineKeyboardButton("Mus1",callback_data="Mus1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
+        buttons=[[InlineKeyboardButton("Mus1",callback_data="Jur_Mus1")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
         context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="which museum?")
     
     if "Jur_Church" in query:
@@ -112,8 +117,11 @@ def queryHandler(update, context):
 
     if "map_Monumenti" in query:
 
-        buttons=[[InlineKeyboardButton("Mon1s",callback_data="map_Monumento1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
-        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali monumenti?")
+        buttons=[[InlineKeyboardButton("Monument",callback_data="map_monumento1")], [InlineKeyboardButton("Monument",callback_data="map_monumento2")],
+        [InlineKeyboardButton("Monument",callback_data="map_monumento3")],[InlineKeyboardButton("Monument",callback_data="map_monumento4")],
+        [InlineKeyboardButton("Monument",callback_data="map_monumento5")],[InlineKeyboardButton("Monument",callback_data="map_monumento6")],
+        [InlineKeyboardButton("Monument",callback_data="map_monumento7")],[InlineKeyboardButton("Back",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quale monumento??")
 
     if "map_Musei" in query:
 
@@ -122,14 +130,17 @@ def queryHandler(update, context):
     
     if "map_Chiese" in query:
 
-        buttons=[[InlineKeyboardButton("Chiesa1",callback_data="Chiese1")],[InlineKeyboardButton("Chiesa2",callback_data="map_Chiese2")],[InlineKeyboardButton("Chiesa3",callback_data="map_Chiese3")],
-        [InlineKeyboardButton("Chiesa4",callback_data="map_Chiese4")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        buttons=[[InlineKeyboardButton("Chiesa1",callback_data="map_Chi1")],[InlineKeyboardButton("Chiesa1",callback_data="map_Chi2")],[InlineKeyboardButton("Chiesa1",callback_data="map_Chi3")],
+        [InlineKeyboardButton("Chiesa1",callback_data="map_Chi4")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
         context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali chiesa?")
     
     if "graf_Monumenti" in query:
 
-        buttons=[[InlineKeyboardButton("Mon1s",callback_data="graf_Monumento1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
-        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali monumenti?")
+        buttons=[[InlineKeyboardButton("Monument",callback_data="graf_monumento1")], [InlineKeyboardButton("Monument",callback_data="graf_monumento2")],
+        [InlineKeyboardButton("Monument",callback_data="graf_monumento3")],[InlineKeyboardButton("Monument",callback_data="graf_monumento4")],
+        [InlineKeyboardButton("Monument",callback_data="graf_monumento5")],[InlineKeyboardButton("Monument",callback_data="graf_monumento6")],
+        [InlineKeyboardButton("Monument",callback_data="graf_monumento7")],[InlineKeyboardButton("Back",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quale monumento??")
 
     if "graf_Musei" in query:
 
@@ -144,8 +155,11 @@ def queryHandler(update, context):
 
     if "Via_Monumenti" in query:
 
-        buttons=[[InlineKeyboardButton("Mon1s",callback_data="Via_Monumento1")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
-        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali monumenti?")
+        buttons=[[InlineKeyboardButton("Monument",callback_data="Via_monumento1")], [InlineKeyboardButton("Monument",callback_data="Via_monumento2")],
+        [InlineKeyboardButton("Monument",callback_data="Via_monumento3")],[InlineKeyboardButton("Monument",callback_data="Via_monumento4")],
+        [InlineKeyboardButton("Monument",callback_data="Via_monumento5")],[InlineKeyboardButton("Monument",callback_data="Via_monumento6")],
+        [InlineKeyboardButton("Monument",callback_data="Via_monumento7")],[InlineKeyboardButton("Back",callback_data="🇮🇹 Italiano")]]
+        context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quale monumento??")
 
     if "Via_Musei" in query:
 
@@ -167,60 +181,12 @@ def queryHandler(update, context):
 
         buttons=[[InlineKeyboardButton("Mappa",callback_data="Mappa")],[InlineKeyboardButton("Viaggio",callback_data="Viaggio")], [InlineKeyboardButton("Grafici",callback_data="Grafici")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
         context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?")
-        
-    if "map_Chiese1" in query:
-        descr_it = descrizioneBot("Chiese")
-        list = posizioneBot("Chiese")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[0])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[0])
-        
-    if "map_Chiese2" in query:
-        descr_it = descrizioneBot("Chiese")
-        list = posizioneBot("Chiese")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[1])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[1])
-        
-    if "map_Chiese3" in query:
-        descr_it = descrizioneBot("Chiese")
-        list = posizioneBot("Chiese")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[2])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[2])
-        
-    if "map_Chiese4" in query:
-        descr_it = descrizioneBot("Chiese")
-        list = posizioneBot("Chiese")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[3])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[3])
+
+    if "museo" in query:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="musei")
     
-    if "map_Monumento1" in query:
-        list = posizioneBot("Monumenti")
-        #context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[0])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[0])
-    
-    if "map_Monumento2" in query:
-        #list = posizioneBot("Monumenti")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[1])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[1])
-        
-    if "map_Monumento3" in query:
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[2])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[2])
-        
-    if "map_Monumento4" in query:
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[3])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[3])
-        
-    if "map_Monumento5" in query:
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[4])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[4])
-        
-    if "map_Monumento6" in query:
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[5])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[5])
-        
-    if "map_Monumento7" in query:
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[6])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[6])
+    if "chiesa" in query:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="chiese")
 
     if "monumento" in query:
         context.bot.send_message(chat_id=update.effective_chat.id, text="monumenti")
