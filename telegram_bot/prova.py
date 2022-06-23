@@ -1,18 +1,5 @@
 import sqlite3
 
-
-
-
-def read_from_db():
-    conn = sqlite3.connect('veronacard.db')
-    c = conn.cursor()
-    c.execute('SELECT latitude, longitude FROM sites_info')
-    data = c.fetchall()
-    for row in data:
-        print(row)
-        
-#read_from_db()
-
 def descrizioneBot(parametro):
     conn = sqlite3.connect('veronacard.db')
     c = conn.cursor()   
@@ -21,17 +8,20 @@ def descrizioneBot(parametro):
     
     c.execute(query_par)
     data = c.fetchall()
-    #print("dati:", data)
-    #print("tipo: ", type(data))
-    for row in data:
-        print(row)
+    #for row in data:
+     #   print(row)
+    return data
 
-descrizioneBot("Chiese")
-        
-        
-def creaBottonibot(parametro):
+def posizioneBot(parametro):
     conn = sqlite3.connect('veronacard.db')
-    c = conn.cursor()      
-    query_par = f'SELECT name_id  FROM sites_info WHERE category_it == "{parametro}" '   
-    c.execute(query_par)
+    c = conn.cursor()   
     
+    query_par = f'SELECT longitude, latitude FROM sites_info WHERE category_it == "Monumenti"'    
+    
+    c.execute(query_par)
+    data = c.fetchall()
+
+    for row in data:
+        print(row)  
+
+posizioneBot("Monumenti")

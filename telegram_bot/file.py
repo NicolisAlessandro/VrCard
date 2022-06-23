@@ -2,22 +2,26 @@ import telegram.ext
 from telegram import*
 from requests import*
 from telegram.ext import CallbackQueryHandler
-import csv
-import sqlite3
+from prova import posizioneBot, descrizioneBot
 
 lan = None
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
+    
+TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
 def start(update, context):
-
-    #csv_read()
-
     buttons=[[InlineKeyboardButton("🇮🇹 Italiano", callback_data="🇮🇹 Italiano")],[InlineKeyboardButton("🇬🇧 / 🇺🇸 English",callback_data="🇬🇧 / 🇺🇸 English")]]
     context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons),text="lingua:🇮🇹 Italiano\n\t\t\t\t\t\t\t\t\t\t\t\t🇬🇧 / 🇺🇸 English ")
 
-#def handle_message(update, context):
+name_id = []
+descr_it = [] 
+descr_it = descrizioneBot("Chiese")
+#descr_eng = []
+list = []
+list = posizioneBot("Chiese")
+
 def queryHandler(update, context):
 
     query = update.callback_query.data
@@ -118,8 +122,8 @@ def queryHandler(update, context):
     
     if "map_Chiese" in query:
 
-        buttons=[[InlineKeyboardButton("Chiesa1",callback_data="map_Chi1")],[InlineKeyboardButton("Chiesa1",callback_data="map_Chi2")],[InlineKeyboardButton("Chiesa1",callback_data="map_Chi3")],
-        [InlineKeyboardButton("Chiesa1",callback_data="map_Chi4")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
+        buttons=[[InlineKeyboardButton("Chiesa1",callback_data="Chiese1")],[InlineKeyboardButton("Chiesa2",callback_data="map_Chiese2")],[InlineKeyboardButton("Chiesa3",callback_data="map_Chiese3")],
+        [InlineKeyboardButton("Chiesa4",callback_data="map_Chiese4")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
         context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quali chiesa?")
     
     if "graf_Monumenti" in query:
@@ -163,12 +167,60 @@ def queryHandler(update, context):
 
         buttons=[[InlineKeyboardButton("Mappa",callback_data="Mappa")],[InlineKeyboardButton("Viaggio",callback_data="Viaggio")], [InlineKeyboardButton("Grafici",callback_data="Grafici")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
         context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di monumento ti piacerebbe visitare?")
-
-    if "museo" in query:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="musei")
+        
+    if "map_Chiese1" in query:
+        descr_it = descrizioneBot("Chiese")
+        list = posizioneBot("Chiese")
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[0])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[0])
+        
+    if "map_Chiese2" in query:
+        descr_it = descrizioneBot("Chiese")
+        list = posizioneBot("Chiese")
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[1])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[1])
+        
+    if "map_Chiese3" in query:
+        descr_it = descrizioneBot("Chiese")
+        list = posizioneBot("Chiese")
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[2])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[2])
+        
+    if "map_Chiese4" in query:
+        descr_it = descrizioneBot("Chiese")
+        list = posizioneBot("Chiese")
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[3])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[3])
     
-    if "chiesa" in query:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="chiese")
+    if "map_Monumento1" in query:
+        list = posizioneBot("Monumenti")
+        #context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[0])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[0])
+    
+    if "map_Monumento2" in query:
+        #list = posizioneBot("Monumenti")
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[1])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[1])
+        
+    if "map_Monumento3" in query:
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[2])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[2])
+        
+    if "map_Monumento4" in query:
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[3])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[3])
+        
+    if "map_Monumento5" in query:
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[4])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[4])
+        
+    if "map_Monumento6" in query:
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[5])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[5])
+        
+    if "map_Monumento7" in query:
+        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[6])
+        context.bot.send_message(chat_id=update.effective_chat.id, text = list[6])
 
     if "monumento" in query:
         context.bot.send_message(chat_id=update.effective_chat.id, text="monumenti")
