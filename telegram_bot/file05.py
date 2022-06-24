@@ -2,22 +2,17 @@ import telegram.ext
 from telegram import*
 from requests import*
 from telegram.ext import CallbackQueryHandler
-import csv
-import sqlite3
+from prova import descrizioneBot, posizioneBot
 
-lan = None
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
 
 def start(update, context):
 
-    #csv_read()
-
     buttons=[[InlineKeyboardButton("🇮🇹 Italiano", callback_data="🇮🇹 Italiano")],[InlineKeyboardButton("🇬🇧 / 🇺🇸 English",callback_data="🇬🇧 / 🇺🇸 English")]]
     context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons),text="lingua:\n🇮🇹 Italiano\n🇬🇧 / 🇺🇸 English ")
 
-#def handle_message(update, context):
 def queryHandler(update, context):
 
     query = update.callback_query.data
@@ -132,7 +127,6 @@ def queryHandler(update, context):
 
     if "map_Monumenti" in query:
 
-<<<<<<< HEAD
         buttons=[[InlineKeyboardButton("Monument",callback_data="map_Monumento1")], [InlineKeyboardButton("Monument",callback_data="map_Monumento2")],
         [InlineKeyboardButton("Monument",callback_data="map_Monumento3")],[InlineKeyboardButton("Monument",callback_data="map_Monumento4")],
         [InlineKeyboardButton("Monument",callback_data="map_Monumento5")],[InlineKeyboardButton("Monument",callback_data="map_Monumento6")],
@@ -141,8 +135,6 @@ def queryHandler(update, context):
 
     if "map_Musei" in query:
 
-        buttons=[[InlineKeyboardButton("Mus1",callback_data="map_Museo1")],[InlineKeyboardButton("Mus2",callback_data="map_Museo2")],[InlineKeyboardButton("Mus3",callback_data="map_Museo3")],
-=======
         buttons=[[InlineKeyboardButton("Monument",callback_data="map_monumento1")], [InlineKeyboardButton("Monument",callback_data="map_monumento2")],
         [InlineKeyboardButton("Monument",callback_data="map_monumento3")],[InlineKeyboardButton("Monument",callback_data="map_monumento4")],
         [InlineKeyboardButton("Monument",callback_data="map_monumento5")],[InlineKeyboardButton("Monument",callback_data="map_monumento6")],
@@ -153,7 +145,6 @@ def queryHandler(update, context):
 
         buttons=[[InlineKeyboardButton("Mus1",callback_data="map_Museo1")],[InlineKeyboardButton("Mus1",callback_data="map_Museo1")],
         [InlineKeyboardButton("Mus1",callback_data="map_Museo1")],[InlineKeyboardButton("Mus2",callback_data="map_Museo2")],[InlineKeyboardButton("Mus3",callback_data="map_Museo3")],
->>>>>>> 3ebc1069e8e09088d70132664bf535f7c6a58c15
         [InlineKeyboardButton("Mus4",callback_data="map_Museo4")],[InlineKeyboardButton("Mus5",callback_data="map_Museo5")],[InlineKeyboardButton("Mus6",callback_data="map_Museo6")],
         [InlineKeyboardButton("Mus7",callback_data="map_Museo7")],[InlineKeyboardButton("Mus8",callback_data="map_Museo8")],[InlineKeyboardButton("Mus9",callback_data="map_Museo9")],
         [InlineKeyboardButton("Mus10",callback_data="map_Museo10")],[InlineKeyboardButton("Mus11",callback_data="map_Museo11")],[InlineKeyboardButton("Mus12",callback_data="map_Museo12")],
@@ -199,13 +190,8 @@ def queryHandler(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id,reply_markup=InlineKeyboardMarkup(buttons), text="quale Monumento??")
 
     if "Via_Musei" in query:
-
-<<<<<<< HEAD
-        buttons=[[InlineKeyboardButton("Mus1",callback_data="via_Museo1")],[InlineKeyboardButton("Mus2",callback_data="via_Museo2")],[InlineKeyboardButton("Mus3",callback_data="via_Museo3")],
-=======
         buttons=[[InlineKeyboardButton("Mus1",callback_data="via_Museo1")],[InlineKeyboardButton("Mus1",callback_data="via_Museo1")],
         [InlineKeyboardButton("Mus1",callback_data="via_Museo1")],[InlineKeyboardButton("Mus2",callback_data="via_Museo2")],[InlineKeyboardButton("Mus3",callback_data="via_Museo3")],
->>>>>>> 3ebc1069e8e09088d70132664bf535f7c6a58c15
         [InlineKeyboardButton("Mus4",callback_data="via_Museo4")],[InlineKeyboardButton("Mus5",callback_data="via_Museo5")],[InlineKeyboardButton("Mus6",callback_data="via_Museo6")],
         [InlineKeyboardButton("Mus7",callback_data="via_Museo7")],[InlineKeyboardButton("Mus8",callback_data="via_Museo8")],[InlineKeyboardButton("Mus9",callback_data="via_Museo9")],
         [InlineKeyboardButton("Mus10",callback_data="via_Museo10")],[InlineKeyboardButton("Mus11",callback_data="via_Museo11")],[InlineKeyboardButton("Mus12",callback_data="via_Museo12")],
@@ -539,8 +525,7 @@ def queryHandler(update, context):
     
     if "museum" in query:
         context.bot.send_message(chat_id=update.effective_chat.id, text="museum")
-    
-<<<<<<< HEAD
+
     if "map_Museum2" in query:
         list = posizioneBot("Monumenti")
         descr_it = descrizioneBot("Monumenti")
@@ -1068,13 +1053,12 @@ def queryHandler(update, context):
         descr_it = descrizioneBot("Monumenti")
         context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[13])
         context.bot.send_message(chat_id=update.effective_chat.id, text = list[13])
-=======
+                 
     if "church" in query:
         context.bot.send_message(chat_id=update.effective_chat.id, text="church")
 
     if "monuments" in query:
         context.bot.send_message(chat_id=update.effective_chat.id, text="monuments")
->>>>>>> 3ebc1069e8e09088d70132664bf535f7c6a58c15
 
     
 def help(update, context):
