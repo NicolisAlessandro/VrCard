@@ -1,3 +1,11 @@
+
+#
+#  file: letturaDb
+#  authors: Alessandro, Simone , Michela
+#  date: 27/06/2022
+#  description: read of the database sqlite3
+#
+
 import sqlite3
 import math
 
@@ -49,8 +57,8 @@ def descrizioneBot(parametro):
     c.execute(query_par)
     data = c.fetchall()
 
-    for row in data:
-        print(row) 
+    #for row in data:
+    #    print(row) 
     
     return data
 
@@ -64,9 +72,9 @@ def AffluenzaBot():
     
     c.execute(query_par)
     data = c.fetchall()
-    for row in data:
-        print(row)
-    return row
+    #for row in data:
+    #    print(row)
+    return data
 
 #AffluenzaBot("Chiese")
 
