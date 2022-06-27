@@ -667,40 +667,46 @@ def queryHandler(update, context):
         #context.bot.send_message(chat_id=update.effective_chat.id, text = list[0])
     
     if "map_Monumento2" in query:
-        list = posizioneBotx("Monumenti")
         descr_it = descrizioneBot("Monumenti")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[1])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[1])
+        stamp_to_screen_monument = "Nome monumento: "+ descr_it[1][0]
+        stamp_to_screen_monument += "\n\n\nIndirizzo monumento: "+ descr_it[1][2]
+        stamp_to_screen_monument += "\n\n\nDescrizione monumento: "+ descr_it[1][1]
+        context.bot.send_message(chat_id=update.effective_chat.id, text = stamp_to_screen_monument)
         
     if "map_Monumento3" in query:
-        list = posizioneBotx("Monumenti")
         descr_it = descrizioneBot("Monumenti")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[2])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[2])
+        stamp_to_screen_monument = "Nome monumento: "+ descr_it[2][0]
+        stamp_to_screen_monument += "\n\n\nIndirizzo monumento: "+ descr_it[2][2]
+        stamp_to_screen_monument += "\n\n\nDescrizione monumento: "+ descr_it[2][1]
+        context.bot.send_message(chat_id=update.effective_chat.id, text = stamp_to_screen_monument)
         
     if "map_Monumento4" in query:
-        list = posizioneBotx("Monumenti")
         descr_it = descrizioneBot("Monumenti")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[3])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[3])
+        stamp_to_screen_monument = "Nome monumento: "+ descr_it[3][0]
+        stamp_to_screen_monument += "\n\n\nIndirizzo monumento: "+ descr_it[3][2]
+        stamp_to_screen_monument += "\n\n\nDescrizione monumento: "+ descr_it[3][1]
+        context.bot.send_message(chat_id=update.effective_chat.id, text = stamp_to_screen_monument)
         
     if "map_Monumento5" in query:
-        list = posizioneBotx("Monumenti")
         descr_it = descrizioneBot("Monumenti")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[4])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[4])
+        stamp_to_screen_monument = "Nome monumento: "+ descr_it[4][0]
+        stamp_to_screen_monument += "\n\n\nIndirizzo monumento: "+ descr_it[4][2]
+        stamp_to_screen_monument += "\n\n\nDescrizione monumento: "+ descr_it[4][1]
+        context.bot.send_message(chat_id=update.effective_chat.id, text = stamp_to_screen_monument)
         
     if "map_Monumento6" in query:
-        list = posizioneBotx("Monumenti")
         descr_it = descrizioneBot("Monumenti")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[5])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[5])
+        stamp_to_screen_monument = "Nome monumento: "+ descr_it[5][0]
+        stamp_to_screen_monument += "\n\n\nIndirizzo monumento: "+ descr_it[5][2]
+        stamp_to_screen_monument += "\n\n\nDescrizione monumento: "+ descr_it[5][1]
+        context.bot.send_message(chat_id=update.effective_chat.id, text = stamp_to_screen_monument)
         
     if "map_Monumento7" in query:
-        list = posizioneBotx("Monumenti")
         descr_it = descrizioneBot("Monumenti")
-        context.bot.send_message(chat_id=update.effective_chat.id, text = descr_it[6])
-        context.bot.send_message(chat_id=update.effective_chat.id, text = list[6])
+        stamp_to_screen_monument = "Nome monumento: "+ descr_it[6][0]
+        stamp_to_screen_monument += "\n\n\nIndirizzo monumento: "+ descr_it[6][2]
+        stamp_to_screen_monument += "\n\n\nDescrizione monumento: "+ descr_it[6][1]
+        context.bot.send_message(chat_id=update.effective_chat.id, text = stamp_to_screen_monument)
         
     if "map_Museo1" in query:
         list = posizioneBotx("Monumenti")
