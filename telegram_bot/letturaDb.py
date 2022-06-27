@@ -52,7 +52,7 @@ def descrizioneBot(parametro):
     conn = sqlite3.connect('veronacard.db')
     c = conn.cursor()   
     
-    query_par = f'SELECT name_id FROM sites_info WHERE category_it == "Monumenti"'    
+    query_par = f'SELECT name_id, descr_it, address FROM sites_info WHERE category_it == "Monumenti"'    
     
     c.execute(query_par)
     data = c.fetchall()
