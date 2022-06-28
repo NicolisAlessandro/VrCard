@@ -11,11 +11,13 @@ from requests import *
 from telegram.ext import CallbackQueryHandler
 from letturaDb import  descrizioneBot, posizioneBotx, posizioneBoty
 #from geopy.geocoders import Nominatim   libreria 
+nscelta=0
 frase = ""
 i=0
 nposti = 0
 index_monument=""
 categ=""
+torna_alle=""
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
@@ -27,7 +29,9 @@ def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons),text="lingua:\n🇮🇹 Italiano\n🇬🇧 / 🇺🇸 English ")
 
 def queryHandler(update, context):
+    global torna_alle
     global categ
+    global nscelta
     global index_monument
     global frase
     global nposti
@@ -36,36 +40,42 @@ def queryHandler(update, context):
 
     if "Viaggio" in query:
 
+        nscelta=2
         frase="Via_"
         buttons=[[InlineKeyboardButton("Monumenti",callback_data="Via_Monumenti")], [InlineKeyboardButton("Musei ",callback_data="Via_Musei ")],[InlineKeyboardButton("Chiese",callback_data="Via_Chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="null")
 
     if "Mappa" in query:
 
+        nscelta = 1
         frase = "map_"
         buttons=[[InlineKeyboardButton("Monumenti",callback_data="map_Monumenti")], [InlineKeyboardButton("Musei ",callback_data="map_Musei ")],[InlineKeyboardButton("chiese",callback_data="map_Chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="mappa")
     
     if "Grafici" in query:
 
+        nscelta = 3
         frase = "graf_"
         buttons=[[InlineKeyboardButton("Monumenti",callback_data="graf_Monumenti")], [InlineKeyboardButton("Musei ",callback_data="graf_Musei ")],[InlineKeyboardButton("Chiese",callback_data="graf_Chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Grafici: ")
 
-    if "eng_map" in query:
+    if "engmap_" in query:
 
         frase="engmap_"
-        buttons=[[InlineKeyboardButton("Monuments",callback_data="map_Monuments")], [InlineKeyboardButton("Museum",callback_data="map_Museum")],[InlineKeyboardButton("Church",callback_data="Jur_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="map for what?")   
+        nscelta = 1
+        buttons=[[InlineKeyboardButton("Monuments",callback_data="engmap_Monuments")], [InlineKeyboardButton("Museum ",callback_data="engmap_Museum ")],[InlineKeyboardButton("Church",callback_data="engmap_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="mappa")
     
     if "Jurney" in query:
 
+        nscelta=2
         frase="Jur_"
         buttons=[[InlineKeyboardButton("Monuments",callback_data="Jur_Monuments")], [InlineKeyboardButton("Museum",callback_data="Jur_Museum")],[InlineKeyboardButton("Church",callback_data="Jur_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Where we droppin' bois?")
     
     if "Graphs" in query:
 
+        nscelta=3
         frase="graf_"
         buttons=[[InlineKeyboardButton("Monuments",callback_data="graf_Monuments")], [InlineKeyboardButton("Museum",callback_data="graf_Museum")],[InlineKeyboardButton("Church",callback_data="graf_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Graphs: ")
@@ -74,73 +84,6 @@ def queryHandler(update, context):
 
         buttons=[[InlineKeyboardButton("🇮🇹 Italiano", callback_data="🇮🇹 Italiano")],[InlineKeyboardButton("🇬🇧 / 🇺🇸 English",callback_data="🇬🇧 / 🇺🇸 English")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="lingua:\n🇮🇹 Italiano\n🇬🇧 / 🇺🇸 English")
-
-    if "map_Monuments" in query:
-    
-        buttons=[[InlineKeyboardButton("Funicolare di Castel San Pietro",callback_data="map_Monument1")], [InlineKeyboardButton("Teatro Romano",callback_data="map_Monument2")],
-        [InlineKeyboardButton("Arena",callback_data="map_Monument3")],[InlineKeyboardButton("Castelvecchio",callback_data="map_Monument4")],
-        [InlineKeyboardButton("Arche Scaligere",callback_data="map_Monument5")],[InlineKeyboardButton("Torre dei Lamberti",callback_data="map_Monument6")],
-        [InlineKeyboardButton("Monument",callback_data="map_Monument7")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="which Monument?")
-
-    if "map_Museum" in query:
-
-        buttons=[[InlineKeyboardButton("Mus1",callback_data="map_Mus1")],[InlineKeyboardButton("Mus2",callback_data="map_Mus2")],
-        [InlineKeyboardButton("Mus3",callback_data="map_Mus3")],[InlineKeyboardButton("Mus4",callback_data="map_Mus4")],[InlineKeyboardButton("Mus5",callback_data="map_Mus5")],
-        [InlineKeyboardButton("Mus6",callback_data="map_Mus6")],[InlineKeyboardButton("Mus7",callback_data="map_Mus7")],[InlineKeyboardButton("Mus8",callback_data="map_Mus8")],
-        [InlineKeyboardButton("Mus9",callback_data="map_Mus9")],[InlineKeyboardButton("Mus10",callback_data="map_Mus10")],[InlineKeyboardButton("Mus11",callback_data="map_Mus11")],
-        [InlineKeyboardButton("Mus12",callback_data="map_Mus12")],[InlineKeyboardButton("Mus13",callback_data="map_Mus13")],
-        [InlineKeyboardButton("Mus14",callback_data="map_Mus14")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="which museum?")
-    
-    if "map_Church" in query:
-
-        buttons=[[InlineKeyboardButton("Chu1",callback_data="map_Chu1")], [InlineKeyboardButton("Chu1",callback_data="map_Chu2")], 
-        [InlineKeyboardButton("Chu1",callback_data="map_Chu3")], [InlineKeyboardButton("Chu1",callback_data="map_Chu4")],
-        [InlineKeyboardButton("Back",callback_data="eng_map")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="which Church?")
-
-    if "graf_Monuments" in query:
-
-        buttons=[[InlineKeyboardButton("Monument",callback_data="graf_Monument1")], [InlineKeyboardButton("Monument",callback_data="graf_Monument2")],
-        [InlineKeyboardButton("Monument",callback_data="graf_Monument3")],[InlineKeyboardButton("Monument",callback_data="graf_Monument4")],
-        [InlineKeyboardButton("Monument",callback_data="graf_Monument5")],[InlineKeyboardButton("Monument",callback_data="graf_Monument6")],
-        [InlineKeyboardButton("Monument",callback_data="graf_Monument7")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="which Monument?")
-
-    if "graf_Museum" in query:
-
-        buttons=[[InlineKeyboardButton("Mus1",callback_data="graf_Mus1")],[InlineKeyboardButton("Mus2",callback_data="graf_Mus2")],
-        [InlineKeyboardButton("Mus3",callback_data="graf_Mus3")],[InlineKeyboardButton("Mus4",callback_data="graf_Mus4")],[InlineKeyboardButton("Mus5",callback_data="graf_Mus5")],
-        [InlineKeyboardButton("Mus6",callback_data="graf_Mus6")],[InlineKeyboardButton("Mus7",callback_data="graf_Mus7")],[InlineKeyboardButton("Mus8",callback_data="graf_Mus8")],
-        [InlineKeyboardButton("Mus9",callback_data="graf_Mus9")],[InlineKeyboardButton("Mus10",callback_data="graf_Mus10")],[InlineKeyboardButton("Mus11",callback_data="graf_Mus11")],
-        [InlineKeyboardButton("Mus12",callback_data="graf_Mus12")],[InlineKeyboardButton("Mus13",callback_data="graf_Mus13")],
-        [InlineKeyboardButton("Mus14",callback_data="graf_Mus14")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="which museum?")
-    
-    if "graf_Church" in query:
-
-        buttons=[[InlineKeyboardButton("Chu1",callback_data="graf_Chu1")],[InlineKeyboardButton("Chu1",callback_data="graf_Chu2")],[InlineKeyboardButton("Chu1",callback_data="graf_Chu3")],
-        [InlineKeyboardButton("Chu1",callback_data="graf_Chu4")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="which Church?")
-    
-    if "Jur_Monuments" in query:
-
-        buttons=[[InlineKeyboardButton("Monument",callback_data="Jur_Monument1")], [InlineKeyboardButton("Monument",callback_data="Jur_Monument2")],
-        [InlineKeyboardButton("Monument",callback_data="Jur_Monument3")],[InlineKeyboardButton("Monument",callback_data="Jur_Monument4")],
-        [InlineKeyboardButton("Monument",callback_data="Jur_Monument5")],[InlineKeyboardButton("Monument",callback_data="Jur_Monument6")],
-        [InlineKeyboardButton("Monument",callback_data="Jur_Monument7")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="which Monument?")
-
-    if "Jur_Museum" in query:
-
-        buttons=[[InlineKeyboardButton("Mus1",callback_data="Jur_Mus1")],[InlineKeyboardButton("Mus2",callback_data="Jur_Mus2")],
-        [InlineKeyboardButton("Mus3",callback_data="Jur_Mus3")],[InlineKeyboardButton("Mus4",callback_data="Jur_Mus4")],[InlineKeyboardButton("Mus5",callback_data="Jur_Mus5")],
-        [InlineKeyboardButton("Mus6",callback_data="Jur_Mus6")],[InlineKeyboardButton("Mus7",callback_data="Jur_Mus7")],[InlineKeyboardButton("Mus8",callback_data="Jur_Mus8")],
-        [InlineKeyboardButton("Mus9",callback_data="Jur_Mus9")],[InlineKeyboardButton("Mus10",callback_data="Jur_Mus10")],[InlineKeyboardButton("Mus11",callback_data="Jur_Mus11")],
-        [InlineKeyboardButton("Mus12",callback_data="Jur_Mus12")],[InlineKeyboardButton("Mus13",callback_data="Jur_Mus13")],
-        [InlineKeyboardButton("Mus14",callback_data="Jur_Mus14")],[InlineKeyboardButton("Back",callback_data="eng_map")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="which museum?")
     
     if "Jur_Church" in query:
 
@@ -155,8 +98,19 @@ def queryHandler(update, context):
             stamp_to_screen_monument = "Nome monumento: "+ descr_it[i][0]
             stamp_to_screen_monument += "\n\n\nIndirizzo monumento: "+ descr_it[i][2]
             stamp_to_screen_monument += "\n\n\nDescrizione monumento: "+ descr_it[i][1]
-            context.bot.send_message(chat_id=update.effective_chat.id, text = stamp_to_screen_monument)
-            update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons), text="museo??")
+            #context.bot.send_message(chat_id=update.effective_chat.id, text = stamp_to_screen_monument)
+            buttons = [[InlineKeyboardButton("Chiudi", callback_data="scegli")]]
+            update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons), text=stamp_to_screen_monument)
+    
+#   for i in range(0,15):
+#       if str( "engmap_" + categ + str(i)) in query:
+#
+#           descr_eng = descrizioneBot(categ)
+#           stamp_to_screen_monument = "Monument Name: "+ descr_eng[i][0]
+#           stamp_to_screen_monument += "\n\n\nMonument address: "+ descr_eng[i][2]
+#           stamp_to_screen_monument += "\n\n\nMonument description: "+ descr_eng[i][1]
+#           context.bot.send_message(chat_id=update.effective_chat.id, text = stamp_to_screen_monument)
+#           update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons), text="map?")
 
     if (str(frase)+ "Monumenti") in query:
 
@@ -169,7 +123,7 @@ def queryHandler(update, context):
             index_monument = str(frase)+"Monumenti"+str(i)
             buttons.append([InlineKeyboardButton(name_monument_str,callback_data=index_monument)]) 
             print(name_monument_str)
-
+        buttons.append([InlineKeyboardButton("Indietro",callback_data="scegli")]) 
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="quale Monumento??")
 
     if (str(frase)+ "Chiese") in query:
@@ -183,7 +137,7 @@ def queryHandler(update, context):
             index_monument = str(frase)+"Chiese"+str(i)
             buttons.append([InlineKeyboardButton(name_monument_str,callback_data=index_monument)]) 
             print(name_monument_str)
-
+        buttons.append([InlineKeyboardButton("Indietro",callback_data="scegli")]) 
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons), text="chiesa?")
 
     if str(frase+"Musei ") in query:
@@ -196,12 +150,90 @@ def queryHandler(update, context):
             index_monument = str(frase)+"Musei "+str(i)
             buttons.append([InlineKeyboardButton(name_monument_str,callback_data=index_monument)]) 
             print(name_monument_str)
-        
+        buttons.append([InlineKeyboardButton("Indietro",callback_data="scegli")]) 
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="quale Museo??")
 
+#    if (str(frase)+ "Church") in query:
+#        
+#        name_mon = descrizioneBot("Church")
+#        categ = "Church"
+#        nposti = 5
+#        buttons=[]
+#        for i in range (0, len(name_mon)):
+#            name_monument_str = name_mon[i][0]
+#            index_monument = str(frase)+"Church"+str(i)
+#            buttons.append([InlineKeyboardButton(name_monument_str,callback_data=index_monument)]) 
+#            print(name_monument_str)
+#        buttons.append([InlineKeyboardButton("Back",callback_data="Back")]) 
+#        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons), text="Church?")
+#
+#    if (str(frase)+ "Monuments") in query:
+#        
+#        name_mon = descrizioneBot("Monuments")
+#        categ = "Monuments"
+#        nposti = 5
+#        buttons=[]
+#        for i in range (0, len(name_mon)):
+#            name_monument_str = name_mon[i][0]
+#            index_monument = str(frase)+"Monuments"+str(i)
+#            buttons.append([InlineKeyboardButton(name_monument_str,callback_data=index_monument)]) 
+#            print(name_monument_str)
+#        buttons.append([InlineKeyboardButton("Back",callback_data="Back")]) 
+#        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons), text="Monuments?")
+#
+#    if (str(frase)+ "Museum") in query:
+#        
+#        name_mon = descrizioneBot("Museum")
+#        categ = "Museum"
+#        nposti = 5
+#        buttons=[]
+#        for i in range (0, len(name_mon)):
+#            name_monument_str = name_mon[i][0]
+#            index_monument = str(frase)+"Museum"+str(i)
+#            buttons.append([InlineKeyboardButton(name_monument_str,callback_data=index_monument)]) 
+#            print(name_monument_str)
+#        buttons.append([InlineKeyboardButton("Back",callback_data="Back")]) 
+#        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons), text="Museum?")
+
     if "🇬🇧 / 🇺🇸 English" in query:
-        buttons=[[InlineKeyboardButton("Map",callback_data="eng_map")],[InlineKeyboardButton("Jurney",callback_data="Jurney")], [InlineKeyboardButton("Graphs",callback_data="Graphs")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
-        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="🇮🇹 welcome to our telegram bot,which type of structure would you like to visit today?")
+        buttons=[[InlineKeyboardButton("Map",callback_data="engmap_")],[InlineKeyboardButton("Jurney",callback_data="Jurney")], [InlineKeyboardButton("Graphs",callback_data="Graphs")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
+        update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="🇬🇧 / 🇺🇸 welcome to our telegram bot,which type of structure would you like to visit today?")
+
+    if "scegli" in query:
+
+        if nscelta==1:
+            nscelta = 1
+            frase = "map_"
+            buttons=[[InlineKeyboardButton("Monumenti",callback_data="map_Monumenti")], [InlineKeyboardButton("Musei ",callback_data="map_Musei ")],[InlineKeyboardButton("chiese",callback_data="map_Chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+            update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="mappa")
+        elif nscelta == 2:
+            nscelta=2
+            frase="Via_"
+            buttons=[[InlineKeyboardButton("Monumenti",callback_data="Via_Monumenti")], [InlineKeyboardButton("Musei ",callback_data="Via_Musei ")],[InlineKeyboardButton("Chiese",callback_data="Via_Chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+            update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="null")
+        elif nscelta == 3:
+            nscelta = 3
+            frase = "graf_"
+            buttons=[[InlineKeyboardButton("Monumenti",callback_data="graf_Monumenti")], [InlineKeyboardButton("Musei ",callback_data="graf_Musei ")],[InlineKeyboardButton("Chiese",callback_data="graf_Chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+            update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Grafici: ")
+    
+    if "Back" in query:
+        if nscelta==1:
+            frase="engmap_"
+            nscelta = 1
+            buttons=[[InlineKeyboardButton("Monuments",callback_data="map_Monuments")], [InlineKeyboardButton("Museum ",callback_data="map_Museum ")],[InlineKeyboardButton("Church",callback_data="engmap_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+            update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="mappa")
+        elif nscelta == 2:
+            nscelta=2
+            frase="Jur_"
+            buttons=[[InlineKeyboardButton("Monuments",callback_data="Jur_Monuments")], [InlineKeyboardButton("Museum",callback_data="Jur_Museum")],[InlineKeyboardButton("Church",callback_data="Jur_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]]
+            update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Where we droppin' bois?")
+        elif nscelta == 3:
+            
+            nscelta=3
+            frase="graf_"
+            buttons=[[InlineKeyboardButton("Monuments",callback_data="graf_Monuments")], [InlineKeyboardButton("Museum",callback_data="graf_Museum")],[InlineKeyboardButton("Church",callback_data="graf_Church")],[InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]]
+            update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Graphs: ")
 
     if "🇮🇹 Italiano" in query:
 
