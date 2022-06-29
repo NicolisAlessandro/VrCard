@@ -20,6 +20,7 @@ index_monument=""
 categ=""
 torna_alle=""
 stamp_to_screen_monument=""
+domanda={}
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
@@ -32,6 +33,7 @@ def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons),text="lingua:\n🇮🇹 Italiano\n🇬🇧 / 🇺🇸 English ")
 
 def queryHandler(update, context):
+    global domanda
     global stamp_to_screen_monument
     global torna_alle
     global categ
@@ -44,14 +46,14 @@ def queryHandler(update, context):
 
     if "🇮🇹 Italiano" in query:
 
-        buttons=[[InlineKeyboardButton("Mappa",callback_data="Mappa")],[InlineKeyboardButton("Viaggio",callback_data="Viaggio")], [InlineKeyboardButton("Grafici",callback_data="Grafici")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
+        buttons=[[InlineKeyboardButton("Quiz", url="https://google.com")],[InlineKeyboardButton("Mappa",callback_data="Mappa")],[InlineKeyboardButton("Viaggio",callback_data="Viaggio")], [InlineKeyboardButton("Grafici",callback_data="Grafici")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di Monumento ti piacerebbe visitare?")
 
     if "🇬🇧 / 🇺🇸 English" in query:
 
-        buttons=[[InlineKeyboardButton("Map",callback_data="engmap_")],[InlineKeyboardButton("Jurney",callback_data="Jurney")], [InlineKeyboardButton("Graphs",callback_data="Graphs")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
+        buttons=[[InlineKeyboardButton("Map",callback_data="engmap_")],[InlineKeyboardButton("Quiz", url="https://google.com")],[InlineKeyboardButton("Jurney",callback_data="Jurney")], [InlineKeyboardButton("Graphs",callback_data="Graphs")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="🇬🇧 / 🇺🇸 welcome to our telegram bot,which type of structure would you like to visit today?")
-   
+
     if "Viaggio" in query:
 
         nscelta=2
@@ -70,7 +72,7 @@ def queryHandler(update, context):
 
         nscelta = 3
         frase = "graf_"
-        buttons=[[InlineKeyboardButton("Monumenti",callback_data="graf__Monumenti")], [InlineKeyboardButton("Musei ",callback_data="graf__Musei ")],[InlineKeyboardButton("Chiese",callback_data="graf__Chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+        buttons=[[InlineKeyboardButton("2014",callback_data="graf_2014")],[InlineKeyboardButton("2015",callback_data="graf_2015")],[InlineKeyboardButton("2016",callback_data="graf_2016")],[InlineKeyboardButton("2017",callback_data="graf_2017")],[InlineKeyboardButton("2018",callback_data="graf_2018")],[InlineKeyboardButton("2019",callback_data="graf_2019")],[InlineKeyboardButton("2020",callback_data="graf_2020")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Grafici: ")
 
     if "engmap_" in query:
@@ -106,27 +108,26 @@ def queryHandler(update, context):
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="which Church?")
 
     for i in range(0,20):
-        if str( "map_" + categ + str(i)) in query:
+        if str( "map_" + categ + str(i)) == query:
             coordX = posizioneBotx(categ)
             coordY = posizioneBoty(categ)
             context.bot.sendLocation(chat_id=update.effective_chat.id, latitude=coordX[i][0], longitude=coordY[i][0])
             buttons=[[InlineKeyboardButton("indietro",callback_data="scegli")]]
             update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="clicca il pulsante per tornare indietro")
-   
+    
     for i in range(0,20):
         if str( "Via_" + categ + str(i)) in query:
 
             buttons=[[InlineKeyboardButton("indietro",callback_data="scegli")]]
             update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="clicca il pulsante per tornare indietro")
 
-    for i in range(0,20):
-        if str( "graf_" + categ + str(i)) in query:
-            PHOTO_PATH= 'immagini/'+categ+str(i)
-            PHOTO_PATH= 'immagini/immagine.png'
+    for i in range(14,20):
+        if str("graf_20"+str(i)) in query:
+            PHOTO_PATH= 'immagini/20'+str(i)+'.png'
             context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(PHOTO_PATH, 'rb'))
             buttons=[[InlineKeyboardButton("indietro",callback_data="scegli")]]
             update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="clicca il pulsante per tornare indietro")
-
+    
     if (str(frase)+ "_Monumenti") in query:
 
         categ = "Monumenti"
@@ -182,7 +183,7 @@ def queryHandler(update, context):
        
         elif nscelta == 3:
 
-            buttons=[[InlineKeyboardButton("Monumenti",callback_data="graf__Monumenti")], [InlineKeyboardButton("Musei ",callback_data="graf__Musei ")],[InlineKeyboardButton("Chiese",callback_data="graf__Chiese")],[InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]]
+            buttons=[[InlineKeyboardButton("2014",callback_data="graf_2014")],[InlineKeyboardButton("2015",callback_data="graf_2015")],[InlineKeyboardButton("2016",callback_data="graf_2016")],[InlineKeyboardButton("2017",callback_data="graf_2017")],[InlineKeyboardButton("2018",callback_data="graf_2018")],[InlineKeyboardButton("2019",callback_data="graf_2019")],[InlineKeyboardButton("2020",callback_data="graf_2020")]]
             update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Grafici: ")
     
     if "123Back" in query:
