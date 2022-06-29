@@ -237,22 +237,3 @@ disp.add_handler(CallbackQueryHandler(queryHandler))
 
 updater.start_polling()
 updater.idle()
-
-def contact(update, context):
-    update.message.reply_text("  📧 Contact me on adrian20032010@gmail.com \n 📱 Discord: konksz#6398")
-
-updater = telegram.ext.Updater(TOKEN, use_context = True)
-disp = updater.dispatcher
-
-disp.add_handler(telegram.ext.CommandHandler("start", start))
-disp.add_handler(telegram.ext.CommandHandler("help", help))
-disp.add_handler(telegram.ext.CommandHandler("content", content))
-disp.add_handler(telegram.ext.CommandHandler("contact", contact))
-disp.add_handler(CallbackQueryHandler(queryHandler))
-disp.add_handler(telegram.ext.MessageHandler(telegram.ext.Filters.text, handle_message))
-
-
-
-
-updater.start_polling()
-updater.idle()
