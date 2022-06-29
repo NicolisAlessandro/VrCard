@@ -25,11 +25,10 @@ torna_alle=""
 stamp_to_screen_monument=""
 domanda = {}
 
-with open("TOKEN.txt", "r") as f:
+with open("token.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
     
-TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
 def start(update, context):
     
