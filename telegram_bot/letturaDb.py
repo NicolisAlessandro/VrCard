@@ -9,6 +9,16 @@
 import sqlite3
 import math
 
+def NomeBot():
+    conn = sqlite3.connect('veronacard.db')
+    c = conn.cursor()   
+    
+    query_par = 'SELECT name_id FROM sites_info'    
+    
+    c.execute(query_par)
+    data = c.fetchall()
+    return data
+
 def descrizioneBot(parametro):
     conn = sqlite3.connect('veronacard.db')
     c = conn.cursor()   
