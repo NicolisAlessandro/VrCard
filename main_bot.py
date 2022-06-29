@@ -46,12 +46,12 @@ def queryHandler(update, context):
 
     if "🇮🇹 Italiano" in query:
 
-        buttons=[[InlineKeyboardButton("Quiz", url="https://google.com")],[InlineKeyboardButton("Mappa",callback_data="Mappa")],[InlineKeyboardButton("Viaggio",callback_data="Viaggio")], [InlineKeyboardButton("Grafici",callback_data="Grafici")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
+        buttons=[[InlineKeyboardButton("Quiz", url="https://take.panquiz.com/0558-1914-4625")],[InlineKeyboardButton("Mappa",callback_data="Mappa")],[InlineKeyboardButton("Viaggio",callback_data="Viaggio")], [InlineKeyboardButton("Grafici",callback_data="Grafici")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di Monumento ti piacerebbe visitare?")
 
     if "🇬🇧 / 🇺🇸 English" in query:
 
-        buttons=[[InlineKeyboardButton("Map",callback_data="engmap_")],[InlineKeyboardButton("Quiz", url="https://google.com")],[InlineKeyboardButton("Jurney",callback_data="Jurney")], [InlineKeyboardButton("Graphs",callback_data="Graphs")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
+        buttons=[[InlineKeyboardButton("Map",callback_data="engmap_")],[InlineKeyboardButton("Quiz", url="https://take.panquiz.com/0558-1914-4625")],[InlineKeyboardButton("Jurney",callback_data="Jurney")], [InlineKeyboardButton("Graphs",callback_data="Graphs")],[InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="🇬🇧 / 🇺🇸 welcome to our telegram bot,which type of structure would you like to visit today?")
 
     if "Viaggio" in query:
@@ -72,7 +72,7 @@ def queryHandler(update, context):
 
         nscelta = 3
         frase = "graf_"
-        buttons=[[InlineKeyboardButton("2014",callback_data="graf_2014")],[InlineKeyboardButton("2015",callback_data="graf_2015")],[InlineKeyboardButton("2016",callback_data="graf_2016")],[InlineKeyboardButton("2017",callback_data="graf_2017")],[InlineKeyboardButton("2018",callback_data="graf_2018")],[InlineKeyboardButton("2019",callback_data="graf_2019")],[InlineKeyboardButton("2020",callback_data="graf_2020")]]
+        buttons=[[InlineKeyboardButton("2014",callback_data="graf_2014")],[InlineKeyboardButton("2015",callback_data="graf_2015")],[InlineKeyboardButton("2016",callback_data="graf_2016")],[InlineKeyboardButton("2017",callback_data="graf_2017")],[InlineKeyboardButton("2018",callback_data="graf_2018")],[InlineKeyboardButton("2019",callback_data="graf_2019")],[InlineKeyboardButton("2020",callback_data="graf_2020")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
         update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Grafici: ")
 
     if "engmap_" in query:
@@ -183,7 +183,7 @@ def queryHandler(update, context):
        
         elif nscelta == 3:
 
-            buttons=[[InlineKeyboardButton("2014",callback_data="graf_2014")],[InlineKeyboardButton("2015",callback_data="graf_2015")],[InlineKeyboardButton("2016",callback_data="graf_2016")],[InlineKeyboardButton("2017",callback_data="graf_2017")],[InlineKeyboardButton("2018",callback_data="graf_2018")],[InlineKeyboardButton("2019",callback_data="graf_2019")],[InlineKeyboardButton("2020",callback_data="graf_2020")]]
+            buttons=[[InlineKeyboardButton("2014",callback_data="graf_2014")],[InlineKeyboardButton("2015",callback_data="graf_2015")],[InlineKeyboardButton("2016",callback_data="graf_2016")],[InlineKeyboardButton("2017",callback_data="graf_2017")],[InlineKeyboardButton("2018",callback_data="graf_2018")],[InlineKeyboardButton("2019",callback_data="graf_2019")],[InlineKeyboardButton("2020",callback_data="graf_2020")],[InlineKeyboardButton("Indietro",callback_data="🇮🇹 Italiano")]]
             update.callback_query.edit_message_text(reply_markup=InlineKeyboardMarkup(buttons),  text="Grafici: ")
     
     if "123Back" in query:
