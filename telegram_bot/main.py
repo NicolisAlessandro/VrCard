@@ -12,7 +12,7 @@ import telegram.ext
 from telegram import *
 from requests import *
 from telegram.ext import *
-from letturaDb import  NomeBot, descrizioneBot, descrizioneEngBot, posizioneBotx, posizioneBoty 
+from letturaDb import  descrizioneBot, descrizioneEngBot, posizioneBotx, posizioneBoty 
 
 nscelta= 0
 frase = ""
@@ -21,9 +21,11 @@ nposti = 0
 index_monument=""
 nomposti = []
 categ=""
+categen =""
 torna_alle=""
 stamp_to_screen_monument=""
-domanda = {}
+dizionario= {}
+lista= []
 
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
@@ -56,7 +58,9 @@ def queryHandler(update, context):
     global index_monument
     global frase
     global nposti
-    global nomposti
+    global categen
+    global dizionario
+    global lista
     query = update.callback_query.data
     update.callback_query.answer()
 
@@ -100,32 +104,54 @@ def queryHandler(update, context):
 
     if "Mappa" in query:
         
-        #nomposti = NomeBot()
         nscelta = 1
         frase = "map_"
         buttons=[
-            [InlineKeyboardButton("Monumenti",callback_data="map__Monumenti")],
-            [InlineKeyboardButton("Musei ",callback_data="map__Musei ")],
-            [InlineKeyboardButton("chiese",callback_data="map__Chiese")],
-            [InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]
+            [InlineKeyboardButton(
+                "Monumenti",
+                callback_data="map__Monumenti")
+             ],
+            [InlineKeyboardButton(
+                "Musei ",
+                callback_data="map__Musei ")
+             ],
+            [InlineKeyboardButton(
+                "chiese",
+                callback_data="map__Chiese")
+             ],
+            [InlineKeyboardButton(
+                "Back/Indietro",
+                callback_data="🇮🇹 Italiano")
+             ]
             ]
         update.callback_query.edit_message_text(
             reply_markup=InlineKeyboardMarkup(buttons),  
             text="mappa")
     
     if "Grafici" in query:
-
+    
         nscelta = 3
         frase = "graf_"
-        buttons=[
-            [InlineKeyboardButton("Monumenti",callback_data="graf__Monumenti")],
-            [InlineKeyboardButton("Musei ",callback_data="graf__Musei ")],
-            [InlineKeyboardButton("Chiese",callback_data="graf__Chiese")],
-            [InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]
+        buttons = []
+        for i in range (14,21):
+            buttons.append(
+                [InlineKeyboardButton(
+                    "20" + str(i),
+                    callback_data="graf_20" + str (i))
+                ]
+            )
+            
+        buttons.append(
+            [InlineKeyboardButton(
+                "Indietro",
+                callback_data="scegli")
             ]
+        )
+        
         update.callback_query.edit_message_text(
-            reply_markup=InlineKeyboardMarkup(buttons),  
+            reply_markup=InlineKeyboardMarkup(buttons),
             text="Grafici: ")
+
 
     if "emap_" in query:
 
@@ -143,30 +169,50 @@ def queryHandler(update, context):
     
     if "Jurney" in query:
 
-        nscelta=2
-        frase="Jur_"
-        buttons=[
-            [InlineKeyboardButton("Monuments",callback_data="Jur_Monuments")],
-            [InlineKeyboardButton("Museum",callback_data="Jur_Museum")],
-            [InlineKeyboardButton("Church",callback_data="Jur_Church")],
-            [InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]
+        nscelta = 3
+        frase = "graf_"
+        buttons = []
+        for i in range (14,21):
+            buttons.append(
+                [InlineKeyboardButton(
+                    "20" + str(i),
+                    callback_data="graf_20" + str (i))
+                ]
+            )
+            
+        buttons.append(
+            [InlineKeyboardButton(
+                "Indietro",
+                callback_data="scegli")
             ]
+        )
+        
         update.callback_query.edit_message_text(
             reply_markup=InlineKeyboardMarkup(buttons),
-            text="Where we droppin' bois?")
+            text="Grafici: ")
     
     if "Graphs" in query:
 
-        nscelta=3
-        frase="graf_"
-        buttons=[
-            [InlineKeyboardButton("Monuments",callback_data="graf_Monuments")],
-            [InlineKeyboardButton("Museum",callback_data="graf_Museum")],
-            [InlineKeyboardButton("Church",callback_data="graf_Church")],
-            [InlineKeyboardButton("Back/Indietro",callback_data="🇬🇧 / 🇺🇸 English")]
+        nscelta = 3
+        frase = "graf_"
+        buttons = []
+        for i in range (14,21):
+            buttons.append(
+                [InlineKeyboardButton(
+                    "20" + str(i),
+                    callback_data="graf_20" + str (i))
+                ]
+            )
+            
+        buttons.append(
+            [InlineKeyboardButton(
+                "back",
+                callback_data="123Back")
             ]
+        )
+        
         update.callback_query.edit_message_text(
-            reply_markup=InlineKeyboardMarkup(buttons),  
+            reply_markup=InlineKeyboardMarkup(buttons),
             text="Graphs: ")
 
     if "Back/Indietro" in query:
@@ -195,35 +241,68 @@ def queryHandler(update, context):
             update.callback_query.edit_message_text(
                 reply_markup=InlineKeyboardMarkup(buttons),
                 text="clicca il pulsante per tornare indietro")
-   
+            
     for i in range(0,nposti):
-        if str( "Via_" + categ + str(i)) == query:
-
+        if str( "engmap_" + categen + str(i)) == query:
+            coordX = posizioneBotx(categ)
+            coordY = posizioneBoty(categ)
+            context.bot.sendLocation(
+                chat_id=update.effective_chat.id,
+                latitude=coordX[i][0], 
+                longitude=coordY[i][0]
+                )
             buttons=[
                 [InlineKeyboardButton(
-                    "indietro",
-                    callback_data="scegli")]]
+                    "back",
+                    callback_data="123Back")]]
             update.callback_query.edit_message_text(
-                reply_markup=InlineKeyboardMarkup(buttons), 
+                reply_markup=InlineKeyboardMarkup(buttons),
                 text="clicca il pulsante per tornare indietro")
+   
+#    for i in range(0,nposti):
+#        if str( "Via_" + categ + str(i)) == query:
+#            buttons=[
+#                [InlineKeyboardButton(
+#                    "indietro",
+#                    callback_data="scegli")]]
+#            update.callback_query.edit_message_text(
+#                reply_markup=InlineKeyboardMarkup(buttons), 
+#                text="clicca il pulsante per tornare indietro")
 
-    for i in range(14,20):
-        if str( "graf_20" + str(i)) == query:
-            PHOTO_PATH= 'immagini/20'+str(i)+ '.png'
+    for i in range(14,21):
+        if str("graf_20"+str(i)) in query:
+            PHOTO_PATH= 'immagini/20'+str(i)+'.png'
             context.bot.send_photo(
-                chat_id=update.effective_chat.id,
+                chat_id=update.effective_chat.id, 
                 photo=open(PHOTO_PATH, 'rb')
-                )
+            )
             buttons=[
                 [InlineKeyboardButton(
                     "indietro",
                     callback_data="scegli")
                 ]
-                ]
+            ]
             update.callback_query.edit_message_text(
-                reply_markup=InlineKeyboardMarkup(buttons), 
+                reply_markup=InlineKeyboardMarkup(buttons),
                 text="clicca il pulsante per tornare indietro")
-
+            
+    for i in range(14,21):
+        if str("graf_20"+str(i)) in query:
+            PHOTO_PATH= 'immagini/eng20'+str(i)+'.png'
+            context.bot.send_photo(
+                chat_id=update.effective_chat.id, 
+                photo=open(PHOTO_PATH, 'rb')
+            )
+            buttons=[
+                [InlineKeyboardButton(
+                    "Back",
+                    callback_data="123Back")
+                ]
+            ]
+            update.callback_query.edit_message_text(
+                reply_markup=InlineKeyboardMarkup(buttons),
+                text="clicca il pulsante per tornare indietro")
+    
     if (str(frase)+ "_Monumenti") in query:
 
         categ = "Monumenti"
@@ -251,6 +330,7 @@ def queryHandler(update, context):
         
         name_mon = descrizioneBot("Chiese")
         categ = "Chiese"
+        
         nposti = 5
         buttons=[]
         for i in range (0, len(name_mon)):
@@ -292,7 +372,8 @@ def queryHandler(update, context):
 
     if (str(frase)+ "Monuments") in query:
         
-        categ = "Monuments"
+        categ = "Monumenti"
+        categen = "Monuments"
         name_mon = descrizioneEngBot("Monumenti")
         buttons=[]
         nposti = 8
@@ -308,7 +389,7 @@ def queryHandler(update, context):
         buttons.append(
             [InlineKeyboardButton(
                 "back",
-                callback_data="123back")
+                callback_data="123Back")
             ]
         )
         update.callback_query.edit_message_text(
@@ -316,10 +397,11 @@ def queryHandler(update, context):
             text="quale Monumento??"
         )
 
-    if (str(frase)+ "_Church") in query:
+    if (str(frase)+ "Church") in query:
         
-        name_mon = descrizioneBot("Chiese")
-        categ = "Church"
+        name_mon = descrizioneEngBot("Chiese")
+        categ = "Chiese"
+        categen = "Church"
         nposti = 5
         buttons=[]
         for i in range (0, len(name_mon)):
@@ -336,7 +418,7 @@ def queryHandler(update, context):
         buttons.append(
             [InlineKeyboardButton(
                 "back",
-                callback_data="123back")
+                callback_data="123Back")
             ]
         ) 
         update.callback_query.edit_message_text(
@@ -344,10 +426,11 @@ def queryHandler(update, context):
             text="chiesa?"
         )
 
-    if str(frase+"_Museum") in query:
-        categ = "Museum"
+    if str(frase+"Museum") in query:
+        categ = "Musei "
+        categen = "Museum"
         nposti = 15
-        name_mon = descrizioneBot("Musei ")
+        name_mon = descrizioneEngBot("Musei ")
         buttons=[]
         for i in range (0, len(name_mon)):
             name_monument_str = name_mon[i][0]
@@ -361,7 +444,7 @@ def queryHandler(update, context):
         buttons.append(
             [InlineKeyboardButton(
                 "back",
-                callback_data="123back")
+                callback_data="123Back")
             ]
         ) 
         update.callback_query.edit_message_text(
@@ -377,11 +460,11 @@ def queryHandler(update, context):
             frase = "map_"
             buttons = [
                 [InlineKeyboardButton(
-                    "Monumenti", callback_data="map_Monumenti")],
+                    "Monumenti", callback_data="map__Monumenti")],
                 [InlineKeyboardButton(
                     "Musei ", callback_data="map__Musei ")],
                 [InlineKeyboardButton(
-                    "chiese", callback_data="map_Chiese")],
+                    "chiese", callback_data="map__Chiese")],
                 [InlineKeyboardButton(
                     "Back/Indietro", callback_data="🇮🇹 Italiano")]
             ]
@@ -390,43 +473,50 @@ def queryHandler(update, context):
                 text="mappa"
             )
 
-        elif nscelta == 2:
-
-            nscelta = 2
-            frase = "Via_"
-            buttons = [
-                [InlineKeyboardButton(
-                    "Monumenti", callback_data="Via_Monumenti")],
-                [InlineKeyboardButton(
-                    "Musei ", callback_data="Via_Musei ")],
-                [InlineKeyboardButton(
-                    "Chiese", callback_data="Via_Chiese")],
-                [InlineKeyboardButton(
-                    "Back/Indietro", callback_data="🇮🇹 Italiano")]
-            ]
-            update.callback_query.edit_message_text(
-                reply_markup=InlineKeyboardMarkup(buttons),
-                text="null"
-            )
+#        elif nscelta == 2:
+#
+#            nscelta = 2
+#            frase = "Via_"
+#            buttons = [
+#                [InlineKeyboardButton(
+#                    "Monumenti", callback_data="Via_Monumenti")],
+#                [InlineKeyboardButton(
+#                    "Musei ", callback_data="Via_Musei ")],
+#                [InlineKeyboardButton(
+#                    "Chiese", callback_data="Via_Chiese")],
+#                [InlineKeyboardButton(
+#                    "Back/Indietro", callback_data="🇮🇹 Italiano")]
+#            ]
+#            update.callback_query.edit_message_text(
+#                reply_markup=InlineKeyboardMarkup(buttons),
+#                text="null"
+#            )
 
         elif nscelta == 3:
-
+        
             nscelta = 3
             frase = "graf_"
-            buttons = [
+            buttons = []
+            for i in range (14,21):
+                buttons.append(
+                    [InlineKeyboardButton(
+                        "20" + str(i),
+                        callback_data="graf_20" + str (i))
+                    ]
+                )
+            
+            buttons.append(
                 [InlineKeyboardButton(
-                    "Monumenti", callback_data="graf_Monumenti")],
-                [InlineKeyboardButton(
-                    "Musei ", callback_data="graf_Musei ")],
-                [InlineKeyboardButton(
-                    "Chiese", callback_data="graf_Chiese")],
-                [InlineKeyboardButton(
-                    "Back/Indietro", callback_data="🇮🇹 Italiano")]
-            ]
+                    "Back/Indietro", 
+                    callback_data="🇮🇹 Italiano"
+                    )
+                 ]
+            )
             update.callback_query.edit_message_text(
                 reply_markup=InlineKeyboardMarkup(buttons),
                 text="Grafici: "
             )
+    
 
     if "123Back" in query:
 
@@ -436,13 +526,13 @@ def queryHandler(update, context):
             nscelta = 1
             buttons = [
                 [InlineKeyboardButton(
-                    "Monuments", callback_data="map_Monuments")],
+                    "Monuments", callback_data="engmap_Monuments")],
                 [InlineKeyboardButton(
-                    "Museum ", callback_data="map_Museum ")],
+                    "Museum ", callback_data="engmap_Museum ")],
                 [InlineKeyboardButton(
                     "Church", callback_data="engmap_Church")],
                 [InlineKeyboardButton(
-                    "Back/Indietro", callback_data="🇮🇹 Italiano")]
+                    "Back/Indietro", callback_data="🇬🇧 / 🇺🇸 English")]
             ]
             update.callback_query.edit_message_text(
                 reply_markup=InlineKeyboardMarkup(buttons),
@@ -472,16 +562,22 @@ def queryHandler(update, context):
 
             nscelta = 3
             frase = "graf_"
-            buttons = [
+            buttons = []
+            for i in range (14,21):
+                buttons.append(
+                    [InlineKeyboardButton(
+                        "20" + str(i),
+                        callback_data="graf_20" + str (i))
+                    ]
+                )
+            
+            buttons.append(
                 [InlineKeyboardButton(
-                    "Monuments", callback_data="graf_Monuments")],
-                [InlineKeyboardButton(
-                    "Museum", callback_data="graf_Museum")],
-                [InlineKeyboardButton(
-                    "Church", callback_data="graf_Church")],
-                [InlineKeyboardButton(
-                    "Back/Indietro", callback_data="🇬🇧 / 🇺🇸 English")]
-            ]
+                    "Back/Indietro", 
+                    callback_data="🇬🇧 / 🇺🇸 English"
+                    )
+                 ]
+            )
             update.callback_query.edit_message_text(
                 reply_markup=InlineKeyboardMarkup(buttons),
                 text="Graphs: "

@@ -23,7 +23,7 @@ def descrizioneBot(parametro):
     conn = sqlite3.connect('veronacard.db')
     c = conn.cursor()   
     
-    query_par = f'SELECT name_id, descr_it, address FROM sites_info WHERE category_it == "{parametro}"'    
+    query_par = f'SELECT name_id FROM sites_info WHERE category_it == "{parametro}"'    
     
     c.execute(query_par)
     data = c.fetchall()
@@ -33,7 +33,7 @@ def descrizioneEngBot(parametro):
     conn = sqlite3.connect('veronacard.db')
     c = conn.cursor()   
     
-    query_par = f'SELECT name_id, descr_it, address FROM sites_info WHERE category_it == "{parametro}"'    
+    query_par = f'SELECT name_id_eng FROM sites_info WHERE category_it == "{parametro}"'    
     
     c.execute(query_par)
     data = c.fetchall()   
@@ -47,7 +47,6 @@ def posizioneBoty(parametro):
     
     c.execute(query_par)
     data = c.fetchall()
-    print (data[2])
     return data
 
 def posizioneBotx(parametro):
@@ -59,5 +58,4 @@ def posizioneBotx(parametro):
     c.execute(query_par)
     data = c.fetchall()
     
-    print (data[2])
     return data
