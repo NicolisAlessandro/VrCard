@@ -26,12 +26,15 @@ torna_alle=""
 stamp_to_screen_monument=""
 dizionario= {}
 lista= []
-
+luogo1 = ['NULL','NULL','NULL']
+luogo2 = ['NULL','NULL','NULL']
+luogo3 = ['NULL','NULL','NULL']
+nvolte=0
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
     
-TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
+#TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
 def start(update, context):
     
@@ -51,6 +54,7 @@ def start(update, context):
         text="lingua:\n🇮🇹 Italiano\n🇬🇧 / 🇺🇸 English ")
 
 def queryHandler(update, context):
+    global luogo1, luogo2, luogo3, nvolte
     global stamp_to_screen_monument
     global torna_alle
     global categ
@@ -65,11 +69,11 @@ def queryHandler(update, context):
     update.callback_query.answer()
 
     if "🇮🇹 Italiano" in query:
-
+        nvolte=0
         buttons=[
             [InlineKeyboardButton("Quiz", url="https://take.panquiz.com/0558-1914-4625")],
             [InlineKeyboardButton("Mappa",callback_data="Mappa")],
-            #[InlineKeyboardButton("Viaggio",callback_data="Viaggio")],
+            [InlineKeyboardButton("Viaggio",callback_data="Viaggio")],
             [InlineKeyboardButton("Grafici",callback_data="Grafici")],
             [InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
         update.callback_query.edit_message_text(
@@ -77,7 +81,7 @@ def queryHandler(update, context):
             text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di Monumento ti piacerebbe visitare?")
 
     if "🇬🇧 / 🇺🇸 English" in query:
-
+        nvolte=0
         buttons=[
             [InlineKeyboardButton("Quiz", url="https://take.panquiz.com/0558-1914-4625")],
             [InlineKeyboardButton("Map",callback_data="emap_")],
@@ -100,7 +104,7 @@ def queryHandler(update, context):
             ]
         update.callback_query.edit_message_text(
             reply_markup=InlineKeyboardMarkup(buttons),  
-            text="null")
+            text="scegli 3 delle possibili strutture")
 
     if "Mappa" in query:
         
@@ -225,7 +229,7 @@ def queryHandler(update, context):
             reply_markup=InlineKeyboardMarkup(buttons),
             text="lingua:\n🇮🇹 Italiano\n🇬🇧 / 🇺🇸 English")
     
-    for i in range(0,nposti):
+    for i in range(0,30):
         if str( "map_" + categ + str(i)) == query:
             coordX = posizioneBotx(categ)
             coordY = posizioneBoty(categ)
@@ -259,15 +263,40 @@ def queryHandler(update, context):
                 reply_markup=InlineKeyboardMarkup(buttons),
                 text="clicca il pulsante per tornare indietro")
    
-#    for i in range(0,nposti):
-#        if str( "Via_" + categ + str(i)) == query:
-#            buttons=[
-#                [InlineKeyboardButton(
-#                    "indietro",
-#                    callback_data="scegli")]]
-#            update.callback_query.edit_message_text(
-#                reply_markup=InlineKeyboardMarkup(buttons), 
-#                text="clicca il pulsante per tornare indietro")
+    for i in range(0,30):
+        if str( "Via_" + categ + str(i)) == query:
+            coordX = posizioneBotx(categ)
+            coordY = posizioneBoty(categ)
+            if nvolte == 0:
+                luogo1[0] = coordX[i][0]
+                luogo1[1] = coordY[i][0]
+                luogo1[2] = "patate"
+                nvolte+=1
+            elif nvolte == 1:
+                luogo2[0] = coordX[i][0]
+                luogo2[1] = coordY[i][0]
+                luogo2[2] = "patate"
+                nvolte+=1
+            elif nvolte == 2:
+                luogo3[0] = coordX[i][0]
+                luogo3[1] = coordY[i][0]
+                luogo3[2] = "patate"
+                nvolte+=1
+                context.bot.sendLocation(
+                    chat_id=update.effective_chat.id,
+                    latitude=luogo1[0], 
+                    longitude=luogo1[1]
+                    )
+                context.bot.sendLocation(
+                    chat_id=update.effective_chat.id,
+                    latitude=luogo2[0], 
+                    longitude=luogo2[1]
+                    )
+                context.bot.sendLocation(
+                    chat_id=update.effective_chat.id,
+                    latitude=luogo3[0], 
+                    longitude=luogo3[1]
+                    )
 
     for i in range(14,21):
         if str("graf_20"+str(i)) in query:
@@ -473,24 +502,19 @@ def queryHandler(update, context):
                 text="mappa"
             )
 
-#        elif nscelta == 2:
-#
-#            nscelta = 2
-#            frase = "Via_"
-#            buttons = [
-#                [InlineKeyboardButton(
-#                    "Monumenti", callback_data="Via_Monumenti")],
-#                [InlineKeyboardButton(
-#                    "Musei ", callback_data="Via_Musei ")],
-#                [InlineKeyboardButton(
-#                    "Chiese", callback_data="Via_Chiese")],
-#                [InlineKeyboardButton(
-#                    "Back/Indietro", callback_data="🇮🇹 Italiano")]
-#            ]
-#            update.callback_query.edit_message_text(
-#                reply_markup=InlineKeyboardMarkup(buttons),
-#                text="null"
-#            )
+        elif nscelta == 2:
+
+            nscelta=2
+            frase="Via_"
+            buttons=[
+                [InlineKeyboardButton("Monumenti",callback_data="Via__Monumenti")],
+                [InlineKeyboardButton("Musei ",callback_data="Via__Musei ")],
+                [InlineKeyboardButton("Chiese",callback_data="Via__Chiese")],
+                [InlineKeyboardButton("Back/Indietro",callback_data="🇮🇹 Italiano")]
+                ]
+            update.callback_query.edit_message_text(
+                reply_markup=InlineKeyboardMarkup(buttons),  
+                text="scegli 3 delle possibili strutture")
 
         elif nscelta == 3:
         
@@ -519,7 +543,7 @@ def queryHandler(update, context):
     
 
     if "123Back" in query:
-
+        nvolte=0
         if nscelta == 1:
 
             frase = "engmap_"
@@ -539,24 +563,24 @@ def queryHandler(update, context):
                 text="mappa"
             )
 
-        #elif nscelta == 2:
+        elif nscelta == 2:
 
-        #    nscelta = 2
-        #    frase = "Jur_"
-        #    buttons = [
-        #        [InlineKeyboardButton(
-        #            "Monuments", callback_data="Jur_Monuments")],
-        #        [InlineKeyboardButton(
-        #            "Museum", callback_data="Jur_Museum")],
-        #        [InlineKeyboardButton(
-        #            "Church", callback_data="Jur_Church")],
-        #        [InlineKeyboardButton(
-        #            "Back/Indietro", callback_data="🇬🇧 / 🇺🇸 English")]
-        #    ]
-        #    update.callback_query.edit_message_text(
-        #        reply_markup=InlineKeyboardMarkup(buttons),
-        #        text="Where we droppin' bois?"
-        #    )
+            nscelta = 2
+            frase = "Jur_"
+            buttons = [
+                [InlineKeyboardButton(
+                    "Monuments", callback_data="Jur_Monuments")],
+                [InlineKeyboardButton(
+                    "Museum", callback_data="Jur_Museum")],
+                [InlineKeyboardButton(
+                    "Church", callback_data="Jur_Church")],
+                [InlineKeyboardButton(
+                    "Back/Indietro", callback_data="🇬🇧 / 🇺🇸 English")]
+            ]
+            update.callback_query.edit_message_text(
+                reply_markup=InlineKeyboardMarkup(buttons),
+                text="Where we droppin' bois?"
+            )
 
         elif nscelta == 3:
 
