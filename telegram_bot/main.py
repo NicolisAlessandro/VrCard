@@ -30,11 +30,12 @@ luogo1 = ['NULL','NULL','NULL']
 luogo2 = ['NULL','NULL','NULL']
 luogo3 = ['NULL','NULL','NULL']
 nvolte=0
+
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
     
-#TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
+TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
 def start(update, context):
     
@@ -65,6 +66,7 @@ def queryHandler(update, context):
     global categen
     global dizionario
     global lista
+    
     query = update.callback_query.data
     update.callback_query.answer()
 
@@ -180,7 +182,7 @@ def queryHandler(update, context):
             buttons.append(
                 [InlineKeyboardButton(
                     "20" + str(i),
-                    callback_data="graf_20" + str (i))
+                    callback_data="graph_20" + str (i))
                 ]
             )
             
@@ -204,7 +206,7 @@ def queryHandler(update, context):
             buttons.append(
                 [InlineKeyboardButton(
                     "20" + str(i),
-                    callback_data="graf_20" + str (i))
+                    callback_data="graph_20" + str (i))
                 ]
             )
             
@@ -300,7 +302,7 @@ def queryHandler(update, context):
 
     for i in range(14,21):
         if str("graf_20"+str(i)) in query:
-            PHOTO_PATH= 'immagini/20'+str(i)+'.png'
+            PHOTO_PATH= 'immagini/ita20'+str(i)+'.png'
             context.bot.send_photo(
                 chat_id=update.effective_chat.id, 
                 photo=open(PHOTO_PATH, 'rb')
@@ -316,7 +318,7 @@ def queryHandler(update, context):
                 text="clicca il pulsante per tornare indietro")
             
     for i in range(14,21):
-        if str("graf_20"+str(i)) in query:
+        if str("graph_20"+str(i)) in query:
             PHOTO_PATH= 'immagini/eng20'+str(i)+'.png'
             context.bot.send_photo(
                 chat_id=update.effective_chat.id, 
@@ -525,7 +527,7 @@ def queryHandler(update, context):
                 buttons.append(
                     [InlineKeyboardButton(
                         "20" + str(i),
-                        callback_data="graf_20" + str (i))
+                        callback_data="graph_20" + str (i))
                     ]
                 )
             
