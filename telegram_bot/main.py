@@ -30,12 +30,11 @@ luogo1 = ['NULL','NULL','NULL']
 luogo2 = ['NULL','NULL','NULL']
 luogo3 = ['NULL','NULL','NULL']
 nvolte=0
-
 with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
     
-TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
+#TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
 def start(update, context):
     
@@ -66,7 +65,6 @@ def queryHandler(update, context):
     global categen
     global dizionario
     global lista
-    
     query = update.callback_query.data
     update.callback_query.answer()
 
@@ -80,14 +78,15 @@ def queryHandler(update, context):
             [InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
         update.callback_query.edit_message_text(
             reply_markup=InlineKeyboardMarkup(buttons),  
-            text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di Monumento ti piacerebbe visitare?")
+            text="🇮🇹 Benvenuto nel nostro canale Telegram, che tipo di Monumento ti piacerebbe visitare?"
+            )
 
     if "🇬🇧 / 🇺🇸 English" in query:
         nvolte=0
         buttons=[
             [InlineKeyboardButton("Quiz", url="https://take.panquiz.com/0558-1914-4625")],
             [InlineKeyboardButton("Map",callback_data="emap_")],
-            #[InlineKeyboardButton("Jurney",callback_data="Jurney")], 
+            [InlineKeyboardButton("Jurney",callback_data="Jurney")], 
             [InlineKeyboardButton("Graphs",callback_data="Graphs")],
             [InlineKeyboardButton("Back/Indietro",callback_data="Back/Indietro")]]
         update.callback_query.edit_message_text(
@@ -113,6 +112,10 @@ def queryHandler(update, context):
         nscelta = 1
         frase = "map_"
         buttons=[
+            [InlineKeyboardButton(
+                "Mappa completa",
+                url="http://umap.openstreetmap.fr/it/map/map_vrcard_780732")
+             ],
             [InlineKeyboardButton(
                 "Monumenti",
                 callback_data="map__Monumenti")
@@ -175,38 +178,28 @@ def queryHandler(update, context):
     
     if "Jurney" in query:
 
-        nscelta = 3
-        frase = "graf_"
-        buttons = []
-        for i in range (14,21):
-            buttons.append(
-                [InlineKeyboardButton(
-                    "20" + str(i),
-                    callback_data="graph_20" + str (i))
-                ]
-            )
-            
-        buttons.append(
-            [InlineKeyboardButton(
-                "Indietro",
-                callback_data="scegli")
+        nscelta=2
+        frase="Jur_"
+        buttons=[
+            [InlineKeyboardButton("Monuments",callback_data="Jur_Monuments")],
+            [InlineKeyboardButton("Museums ",callback_data="Jur_Museum ")],
+            [InlineKeyboardButton("Churchs",callback_data="Jur_Church")],
+            [InlineKeyboardButton("Back",callback_data="🇬🇧 / 🇺🇸 English")]
             ]
-        )
-        
         update.callback_query.edit_message_text(
-            reply_markup=InlineKeyboardMarkup(buttons),
-            text="Grafici: ")
+            reply_markup=InlineKeyboardMarkup(buttons),  
+            text="choose 3 monuments from the list:")
     
     if "Graphs" in query:
 
         nscelta = 3
-        frase = "graf_"
+        frase = "graph_"
         buttons = []
         for i in range (14,21):
             buttons.append(
                 [InlineKeyboardButton(
                     "20" + str(i),
-                    callback_data="graph_20" + str (i))
+                    callback_data="graph_eng20" + str (i))
                 ]
             )
             
@@ -265,6 +258,43 @@ def queryHandler(update, context):
                 reply_markup=InlineKeyboardMarkup(buttons),
                 text="clicca il pulsante per tornare indietro")
    
+
+
+    for i in range(0,30):
+        if str( "Jur_" + categen + str(i)) == query:
+            coordX = posizioneBotx(categ)
+            coordY = posizioneBoty(categ)
+            if nvolte == 0:
+                luogo1[0] = coordX[i][0]
+                luogo1[1] = coordY[i][0]
+                luogo1[2] = "patate"
+                nvolte+=1
+            elif nvolte == 1:
+                luogo2[0] = coordX[i][0]
+                luogo2[1] = coordY[i][0]
+                luogo2[2] = "patate"
+                nvolte+=1
+            elif nvolte == 2:
+                luogo3[0] = coordX[i][0]
+                luogo3[1] = coordY[i][0]
+                luogo3[2] = "patate"
+                nvolte+=1
+                context.bot.sendLocation(
+                    chat_id=update.effective_chat.id,
+                    latitude=luogo1[0], 
+                    longitude=luogo1[1]
+                    )
+                context.bot.sendLocation(
+                    chat_id=update.effective_chat.id,
+                    latitude=luogo2[0], 
+                    longitude=luogo2[1]
+                    )
+                context.bot.sendLocation(
+                    chat_id=update.effective_chat.id,
+                    latitude=luogo3[0], 
+                    longitude=luogo3[1]
+                    )
+  
     for i in range(0,30):
         if str( "Via_" + categ + str(i)) == query:
             coordX = posizioneBotx(categ)
@@ -318,7 +348,7 @@ def queryHandler(update, context):
                 text="clicca il pulsante per tornare indietro")
             
     for i in range(14,21):
-        if str("graph_20"+str(i)) in query:
+        if str("graph_eng20"+str(i)) == query:
             PHOTO_PATH= 'immagini/eng20'+str(i)+'.png'
             context.bot.send_photo(
                 chat_id=update.effective_chat.id, 
@@ -383,7 +413,7 @@ def queryHandler(update, context):
             text="chiesa?"
             )
 
-    if str(frase+"_Musei") in query:
+    if str(frase+"_Musei") == query:
         categ = "Musei "
         nposti = 15
         name_mon = descrizioneBot("Musei ")
@@ -401,7 +431,7 @@ def queryHandler(update, context):
             reply_markup=InlineKeyboardMarkup(buttons),
             text="museo?")
 
-    if (str(frase)+ "Monuments") in query:
+    if (str(frase)+ "Monuments") == query:
         
         categ = "Monumenti"
         categen = "Monuments"
@@ -428,7 +458,7 @@ def queryHandler(update, context):
             text="quale Monumento??"
         )
 
-    if (str(frase)+ "Church") in query:
+    if (str(frase)+ "Church") == query:
         
         name_mon = descrizioneEngBot("Chiese")
         categ = "Chiese"
@@ -457,7 +487,7 @@ def queryHandler(update, context):
             text="chiesa?"
         )
 
-    if str(frase+"Museum") in query:
+    if str(frase+"Museum ") == query:
         categ = "Musei "
         categen = "Museum"
         nposti = 15
@@ -527,7 +557,7 @@ def queryHandler(update, context):
                 buttons.append(
                     [InlineKeyboardButton(
                         "20" + str(i),
-                        callback_data="graph_20" + str (i))
+                        callback_data="graf_20" + str (i))
                     ]
                 )
             
@@ -545,7 +575,6 @@ def queryHandler(update, context):
     
 
     if "123Back" in query:
-        nvolte=0
         if nscelta == 1:
 
             frase = "engmap_"
@@ -573,7 +602,7 @@ def queryHandler(update, context):
                 [InlineKeyboardButton(
                     "Monuments", callback_data="Jur_Monuments")],
                 [InlineKeyboardButton(
-                    "Museum", callback_data="Jur_Museum")],
+                    "Museum", callback_data="Jur_Museum ")],
                 [InlineKeyboardButton(
                     "Church", callback_data="Jur_Church")],
                 [InlineKeyboardButton(
@@ -581,19 +610,19 @@ def queryHandler(update, context):
             ]
             update.callback_query.edit_message_text(
                 reply_markup=InlineKeyboardMarkup(buttons),
-                text="Where we droppin' bois?"
+                text="choose 3 monuments from the list:?"
             )
 
         elif nscelta == 3:
 
             nscelta = 3
-            frase = "graf_"
+            frase = "graph_"
             buttons = []
             for i in range (14,21):
                 buttons.append(
                     [InlineKeyboardButton(
                         "20" + str(i),
-                        callback_data="graf_20" + str (i))
+                        callback_data="graph_eng20" + str (i))
                     ]
                 )
             
