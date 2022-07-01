@@ -19,6 +19,19 @@ def NomeBot():
     data = c.fetchall()
     return data
 
+def restituisciOra(parametro):
+    conn = sqlite3.connect('veronacard.db')
+    c = conn.cursor()   
+    
+    query_par = f'SELECT ora_id FROM sites_info WHERE category_it == "{parametro}"'     
+    
+    c.execute(query_par)
+    data = c.fetchall()
+    print(data)
+    return data
+
+restituisciOra("Musei ")
+
 def descrizioneBot(parametro):
     conn = sqlite3.connect('veronacard.db')
     c = conn.cursor()   

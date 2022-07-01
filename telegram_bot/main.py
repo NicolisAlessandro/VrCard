@@ -12,7 +12,7 @@ import telegram.ext
 from telegram import *
 from requests import *
 from telegram.ext import *
-from letturaDb import  descrizioneBot, descrizioneEngBot, posizioneBotx, posizioneBoty 
+from letturaDb import  descrizioneBot, descrizioneEngBot, posizioneBotx, posizioneBoty, restituisciOra 
 
 nscelta= 0
 frase = ""
@@ -34,7 +34,7 @@ with open("TOKEN.txt", "r") as f:
     TOKEN = f.read()
     print("Your token is: ", TOKEN)
     
-#TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
+TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
 def start(update, context):
     
@@ -84,7 +84,7 @@ def queryHandler(update, context):
     if "🇬🇧 / 🇺🇸 English" in query:
         nvolte=0
         buttons=[
-            [InlineKeyboardButton("Quiz", url="https://take.panquiz.com/0558-1914-4625")],
+            [InlineKeyboardButton("Quiz", url="https://take.panquiz.com/7756-4532-2726")],
             [InlineKeyboardButton("Map",callback_data="emap_")],
             [InlineKeyboardButton("Jurney",callback_data="Jurney")], 
             [InlineKeyboardButton("Graphs",callback_data="Graphs")],
@@ -264,66 +264,99 @@ def queryHandler(update, context):
         if str( "Jur_" + categen + str(i)) == query:
             coordX = posizioneBotx(categ)
             coordY = posizioneBoty(categ)
+            ora_visita = restituisciOra(categ)
             if nvolte == 0:
                 luogo1[0] = coordX[i][0]
                 luogo1[1] = coordY[i][0]
-                luogo1[2] = "patate"
+                luogo1[2] = ora_visita[i][0]
                 nvolte+=1
             elif nvolte == 1:
                 luogo2[0] = coordX[i][0]
                 luogo2[1] = coordY[i][0]
-                luogo2[2] = "patate"
+                luogo2[2] = ora_visita[i][0]
                 nvolte+=1
             elif nvolte == 2:
                 luogo3[0] = coordX[i][0]
                 luogo3[1] = coordY[i][0]
-                luogo3[2] = "patate"
+                luogo3[2] = ora_visita[i][0]
                 nvolte+=1
+                
                 context.bot.sendLocation(
                     chat_id=update.effective_chat.id,
                     latitude=luogo1[0], 
                     longitude=luogo1[1]
                     )
+                update.callback_query.message.edit_text(
+                    "il tempo per visitare è " + str(luogo1[2])
+                    )
+                
+                context.bot.sendLocation(
+                    chat_id=update.effective_chat.id,
+                    latitude=luogo1[0], 
+                    longitude=luogo1[1]
+                    )
+                
+                update.callback_query.message.edit_text(
+                    "il tempo per visitare è " + str(luogo2[2])
+                    )
+
                 context.bot.sendLocation(
                     chat_id=update.effective_chat.id,
                     latitude=luogo2[0], 
                     longitude=luogo2[1]
                     )
-                context.bot.sendLocation(
-                    chat_id=update.effective_chat.id,
-                    latitude=luogo3[0], 
-                    longitude=luogo3[1]
-                    )
+                
+                #update.callback_query.message.edit_text(
+                #    "il tempo per visitare è " + str(luogo3[2])
+                #    )
+                
+                update.message.reply_text(str (luogo2[2]))
   
     for i in range(0,30):
-        if str( "Via_" + categ + str(i)) == query:
+        if str( "Via_" + categ + str(i)) in query:
             coordX = posizioneBotx(categ)
             coordY = posizioneBoty(categ)
+            ora_visita = restituisciOra(categ)
             if nvolte == 0:
                 luogo1[0] = coordX[i][0]
                 luogo1[1] = coordY[i][0]
-                luogo1[2] = "patate"
+                luogo1[2] = ora_visita[i][0]
                 nvolte+=1
             elif nvolte == 1:
                 luogo2[0] = coordX[i][0]
                 luogo2[1] = coordY[i][0]
-                luogo2[2] = "patate"
+                luogo2[2] = ora_visita[i][0]
                 nvolte+=1
             elif nvolte == 2:
                 luogo3[0] = coordX[i][0]
                 luogo3[1] = coordY[i][0]
-                luogo3[2] = "patate"
+                luogo3[2] = ora_visita[i][0]
                 nvolte+=1
+                
+                update.callback_query.message.edit_text(
+                    "il tempo per visitare è " + str(luogo1[2])
+                    )
+                
                 context.bot.sendLocation(
                     chat_id=update.effective_chat.id,
                     latitude=luogo1[0], 
                     longitude=luogo1[1]
                     )
+                
+                update.callback_query.message.edit_text(
+                    "il tempo per visitare è " + str(luogo2[2])
+                    )
+
                 context.bot.sendLocation(
                     chat_id=update.effective_chat.id,
                     latitude=luogo2[0], 
                     longitude=luogo2[1]
                     )
+                
+                update.callback_query.message.edit_text(
+                    "il tempo per visitare è " + str(luogo3[2])
+                    )
+                
                 context.bot.sendLocation(
                     chat_id=update.effective_chat.id,
                     latitude=luogo3[0], 
@@ -332,7 +365,7 @@ def queryHandler(update, context):
 
     for i in range(14,21):
         if str("graf_20"+str(i)) in query:
-            PHOTO_PATH= 'immagini/ita20'+str(i)+'.png'
+            PHOTO_PATH= 'immagini/20'+str(i)+'.png'
             context.bot.send_photo(
                 chat_id=update.effective_chat.id, 
                 photo=open(PHOTO_PATH, 'rb')
@@ -413,7 +446,7 @@ def queryHandler(update, context):
             text="chiesa?"
             )
 
-    if str(frase+"_Musei") == query:
+    if str(frase+"_Musei ") == query:
         categ = "Musei "
         nposti = 15
         name_mon = descrizioneBot("Musei ")
