@@ -217,6 +217,10 @@ def queryHandler(update, context):
         nscelta = 1
         buttons=[
             [InlineKeyboardButton(
+                "Complete map",
+                url="http://umap.openstreetmap.fr/it/map/map_vrcard_780732")
+             ],
+            [InlineKeyboardButton(
                 "Monuments",
                 callback_data="engmap_Monuments")
              ],
