@@ -31,11 +31,8 @@ luogo1 = ['NULL','NULL','NULL']
 luogo2 = ['NULL','NULL','NULL']
 luogo3 = ['NULL','NULL','NULL']
 nvolte=0
-with open("TOKEN.txt", "r") as f:
-    TOKEN = f.read()
-    print("Your token is: ", TOKEN)
     
-TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
+TOKEN = "5555334803:AAHnMNpenO8KWiwRWNKv9973vvnyItAC1cg"
 
 def start(update, context):
     
@@ -217,7 +214,7 @@ def queryHandler(update, context):
         nscelta = 1
         buttons=[
             [InlineKeyboardButton(
-                "complete map",
+                "Complete map",
                 url="http://umap.openstreetmap.fr/it/map/map_vrcard_780732")
              ],
             [InlineKeyboardButton(
@@ -282,7 +279,7 @@ def queryHandler(update, context):
             
         buttons.append(
             [InlineKeyboardButton(
-                "back",
+                "Back",
                 callback_data="123Back")
             ]
         )
@@ -303,7 +300,6 @@ def queryHandler(update, context):
                 callback_data="🇬🇧 / 🇺🇸 English")
              ]
             ]
-        
         update.callback_query.edit_message_text(
             reply_markup=InlineKeyboardMarkup(buttons),
             text="lingua:\n🇮🇹 Italiano\n🇬🇧 / 🇺🇸 English")
@@ -786,7 +782,7 @@ def queryHandler(update, context):
             
             buttons.append(
                 [InlineKeyboardButton(
-                    "Back/Indietro", 
+                    "Back", 
                     callback_data="🇬🇧 / 🇺🇸 English"
                     )
                  ]
