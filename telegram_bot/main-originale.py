@@ -31,9 +31,6 @@ luogo1 = ['NULL','NULL','NULL']
 luogo2 = ['NULL','NULL','NULL']
 luogo3 = ['NULL','NULL','NULL']
 nvolte=0
-with open("TOKEN.txt", "r") as f:
-    TOKEN = f.read()
-    print("Your token is: ", TOKEN)
     
 TOKEN = "5592675935:AAFXOB1e14hOIb2iiRdiL_KO0CaIZA0DBE4"
 
@@ -282,7 +279,7 @@ def queryHandler(update, context):
             
         buttons.append(
             [InlineKeyboardButton(
-                "back",
+                "Back",
                 callback_data="123Back")
             ]
         )
@@ -785,7 +782,7 @@ def queryHandler(update, context):
             
             buttons.append(
                 [InlineKeyboardButton(
-                    "Back/Indietro", 
+                    "Back", 
                     callback_data="🇬🇧 / 🇺🇸 English"
                     )
                  ]

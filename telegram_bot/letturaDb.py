@@ -27,7 +27,7 @@ def restituisciOra(parametro):
     
     c.execute(query_par)
     data = c.fetchall()
-    print(data)
+    
     return data
 
 restituisciOra("Musei ")
