@@ -10,7 +10,7 @@ The bot was created with the intention of simplifying visits to the city of Vero
 How to use the bot To use the bot, simply download telegram, log in (or subscribe) and then enter the bot's link, or search for its name in the search bar.
 
 
-# Instalazione / Instalation
+# Installazione / Instalation
 ## **Italiano**
 1) Assicurati di aver installato Visual Studio Code.
 2) Estrai tutto in una cartella, poi aprilo in VS Code.
