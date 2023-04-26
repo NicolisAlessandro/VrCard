@@ -24,6 +24,8 @@ How to use the bot To use the bot, simply download telegram, log in (or subscrib
 - `pip install requests`
 - `pip install email`
 - `pip install numpy`
+- `pip install telebot`
+
 5) Dopo tutti questi passaggi, avvia il bot premendo **F5** o facendo clic su **Esegui > Avvia debug**.
 6) L'ultimo passaggio è di aprire **Telegram** sul tuo **telefono Android/IOS** o su **PC**, cercare il nome del tuo bot e fare semplicemente clic su **START**.
 
@@ -42,6 +44,8 @@ How to use the bot To use the bot, simply download telegram, log in (or subscrib
 - `pip install requests`
 - `pip install email`
 - `pip install numpy`
+- `pip install telebot`
+
 5) After all this steps, just run the bot by pressing **F5** or by clicking on **Run > Start debugging**.
 6) The last step is to open **Telegram** on your **Android/IOS phone** or on **PC**, search your bot name and just click **START**.
 
