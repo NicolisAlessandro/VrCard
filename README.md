@@ -19,7 +19,7 @@ How to use the bot To use the bot, simply download telegram, log in (or subscrib
    5592175235:AAFXOC1e14hOIb2iiRdiL_KO0AaIOA0DBR4
    ```
 
-4) >Librerie da installare:
+4) >Librerie da installare tramite shell di comando (su windows vi basterà cliccare il tasto Windows>scrivere "cmd">cliccare invio):
 - `pip install python-telegram-bot`
 - `pip install requests`
 - `pip install email`
